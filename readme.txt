@@ -1,38 +1,38 @@
-# NodeInfo(2) #
+=== NodeInfo(2) ===
 
-**Contributors:** [pfefferle](https://profiles.wordpress.org/pfefferle)  
-**Donate link:** https://notiz.blog/donate/  
-**Tags:** nodeinfo, fediverse, ostatus, diaspora, activitypub  
-**Requires at least:** 4.9  
-**Tested up to:** 4.9.9  
-**Stable tag:** 1.0.0  
-**Requires PHP:** 5.6  
-**License:** MIT  
-**License URI:** https://opensource.org/licenses/MIT  
+Contributors: pfefferle
+Donate link: https://notiz.blog/donate/
+Tags: nodeinfo, fediverse, ostatus, diaspora, activitypub
+Requires at least: 4.9
+Tested up to: 4.9.9
+Stable tag: 1.0.0
+Requires PHP: 5.6
+License: MIT
+License URI: https://opensource.org/licenses/MIT
 
 NodeInfo and NodeInfo2 for WordPress!
 
-## Description ##
+== Description ==
 
 [NodeInfo](http://nodeinfo.diaspora.software/) is an effort to create a standardized way of exposing metadata about a server running one of the distributed social networks. The two key goals are being able to get better insights into the user base of distributed social networking and the ability to build tools that allow users to choose the best fitting software and server for their needs.
 
 This plugin provides a barebone JSON file, the file can be extended by other WordPress plugins, like [OStatus](https://wordpress.org/plugins/ostatus-for-wordpress/), Diaspora or [ActivityPub](https://wordpress.org/plugins/activitypub/)/[Pterotype](https://wordpress.org/plugins/pterotype/).
 
-## Frequently Asked Questions ##
+== Frequently Asked Questions ==
 
-## Changelog ##
+== Changelog ==
 
 Project and support maintained on github at [pfefferle/wordpress-nodeinfo](https://github.com/pfefferle/wordpress-nodeinfo).
 
-### 1.0.0 ###
+= 1.0.0 =
 
 * initial
 
-## Installation ##
+== Installation ==
 
 Follow the normal instructions for [installing WordPress plugins](https://codex.wordpress.org/Managing_Plugins#Installing_Plugins).
 
-### Automatic Plugin Installation ###
+= Automatic Plugin Installation =
 
 To add a WordPress Plugin using the [built-in plugin installer](https://codex.wordpress.org/Administration_Screens#Add_New_Plugins):
 
@@ -44,7 +44,7 @@ To add a WordPress Plugin using the [built-in plugin installer](https://codex.wo
 1. The resulting installation screen will list the installation as successful or note any problems during the install.
 1. If successful, click **Activate Plugin** to activate it, or **Return to Plugin Installer** for further actions.
 
-### Manual Plugin Installation ###
+= Manual Plugin Installation =
 
 There are a few cases when manually installing a WordPress Plugin is appropriate.
 
