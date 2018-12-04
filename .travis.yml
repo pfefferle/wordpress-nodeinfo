@@ -17,7 +17,7 @@ env:
   - WP_TRAVISCI=travis:phpunit
   - SVN_REPO: https://plugins.svn.wordpress.org/nodeinfo/
   - GH_REF: https://github.com/pfefferle/wordpress-nodeinfo.git
-  - secure: "WaeBLo0MDuK4X7NQvk5Ie5BVnexHtyDfHAV8v7dB8B67d8GCWy9K5I54jTECNRUC+CecMakLq5DOfn+ThtWdkJmoJKnGNFp8ZrWkMsfVJRi3CDED2HkccOrxkmXBj8Z6A8jZjcfVNrEmq/6697xVNRGeaS08l9rokh7pyb8INWY="
+  - secure: "Nm7iO/d9BAVjgBjynjxdeiGyMsn3wR2xPmH1J1JgqIKrPKPwNi49fWqpWqo7euWP3npAJZzWiBjWYlTGC3GfA1EsDU/7geDVcHkZ4oeQ96CGTcQotIkbjS08pwD4aOKk/xXn3dIc8rleNgw0NMtYb1XcYb0N36EqWMEIVwZqrI/i+oHIKbSbyWRzE2Z991tiRS9ra+KzYqXqYy/DTr/eHZFgl5SMEUtcWGpxSdM0bYzO0dHmU1M6dqnJZEzdYws2k/MT/yjhR6iiu5mBBCdOu69BcLGUxwHA3ZbwpwMBJNC77Ze0IZtam1abhnqMuwyMswgyf76KEpBSEjSBNMKhI+9KZMW1HvCamfKHalXOA7LH91ozL7i5bUv95/c38FddQn/WcrXDuCgtWcRJgb7SMItYLCRuu1Cfl/qOxESI6JORFunwP5tGrqWWNHhIB1ApbxuUhJLMQ8gtP3469GKCm27zFbdquUfPKQyeJI3QIhCfWfpooRVVu++4QuLJaUQy1nVYC/eJIfHUEl4rHgL8Trsww/XIS8a69BJ2rj4xv6+ebnJWlGwiIHkjAtND5mD7hQ1Vs7rf+nxvdchgEQsZdjKAFoyhjWqLTGgUwhGRGX3tjgq0doQR+BkKrqnp/R23x7wUdFcW+QbVf41BGGWKwzJs7/6t/yBTBRCIQYpxKuQ="
 matrix:
   include:
   - php: 7.2
