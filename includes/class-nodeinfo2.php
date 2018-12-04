@@ -45,7 +45,7 @@ class Nodeinfo2 {
 
 	public function generate_server() {
 		$this->server = apply_filters( 'nodeinfo2_data_server', array(
-			'baseUrl' => site_url( '/' ),
+			'baseUrl' => home_url( '/' ),
 			'name' => get_bloginfo( 'name' ),
 			'software' => 'wordpress',
 			'version' => get_bloginfo( 'version' ),

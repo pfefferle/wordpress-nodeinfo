@@ -5,7 +5,7 @@ Donate link: https://notiz.blog/donate/
 Tags: nodeinfo, fediverse, ostatus, diaspora, activitypub
 Requires at least: 4.9
 Tested up to: 4.9.9
-Stable tag: 1.0.0
+Stable tag: 1.0.1
 Requires PHP: 5.6
 License: MIT
 License URI: https://opensource.org/licenses/MIT
@@ -23,6 +23,10 @@ This plugin provides a barebone JSON file, the file can be extended by other Wor
 == Changelog ==
 
 Project and support maintained on github at [pfefferle/wordpress-nodeinfo](https://github.com/pfefferle/wordpress-nodeinfo).
+
+= 1.0.1 =
+
+* use `home_url` insted of `site_url`
 
 = 1.0.0 =
 
