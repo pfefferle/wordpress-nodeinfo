@@ -14,7 +14,7 @@ class Nodeinfo {
 		'outbound' => array(),
 	);
 	public $protocols = array();
-	public $metadata = array();
+	public $metadata;
 
 	public function __construct( $version = '2.0' ) {
 		if ( in_array( $version, array( '1.0', '1.1', '2.0' ) ) ) {
@@ -77,7 +77,7 @@ class Nodeinfo {
 	}
 
 	public function generate_metadata() {
-		return apply_filters( 'nodeinfo_data_metadata', array(), $this->version );
+		$this->metadata = apply_filters( 'nodeinfo_data_metadata', new stdClass, $this->version );
 	}
 
 	public function to_array() {
