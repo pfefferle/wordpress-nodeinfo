@@ -7,6 +7,7 @@
 .data export-ignore
 .github export-ignore
 .gitattributes export-ignore
+.wordpress-org export-ignore
 Gruntfile.js export-ignore
 LINGUAS export-ignore
 Makefile export-ignore

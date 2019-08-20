@@ -2,6 +2,7 @@
 .editorconfig
 .git
 .gitignore
+.wordpress-org
 .travis.yml
 .codeclimate.yml
 .data
