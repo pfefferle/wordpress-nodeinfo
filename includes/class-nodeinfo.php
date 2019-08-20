@@ -70,7 +70,7 @@ class Nodeinfo {
 			$services['inbound'] = array( 'atom1.0', 'rss2.0', 'pop3' );
 			$services['outbound'] = array( 'atom1.0', 'rss2.0', 'wordpress', 'smtp' );
 		} else {
-			$services['outbound'] = array( ' smtp' );
+			$services['outbound'] = array( 'smtp' );
 		}
 
 		$this->services = apply_filters( 'nodeinfo_data_services', $services, $this->version );
