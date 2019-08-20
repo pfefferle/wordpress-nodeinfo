@@ -16,3 +16,6 @@ jobs:
         SLUG: nodeinfo
         SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
         SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
+push:
+  branches:
+  - tags/*
