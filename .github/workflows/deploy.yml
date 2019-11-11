@@ -2,7 +2,7 @@ on:
   push:
     branches:
     - tags/*
-name: Deploy
+name: Deploy to WordPress.org
 jobs:
   tag:
     runs-on: ubuntu-latest
