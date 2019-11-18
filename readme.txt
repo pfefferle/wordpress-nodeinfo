@@ -16,7 +16,7 @@ NodeInfo and NodeInfo2 for WordPress!
 
 [NodeInfo](http://nodeinfo.diaspora.software/) is an effort to create a standardized way of exposing metadata about a server running one of the distributed social networks. The two key goals are being able to get better insights into the user base of distributed social networking and the ability to build tools that allow users to choose the best fitting software and server for their needs.
 
-This plugin provides a barebone JSON file, the file can be extended by other WordPress plugins, like [OStatus](https://wordpress.org/plugins/ostatus-for-wordpress/), [Diaspora](https://github.com/pfefferle/wordpress-dandelion) or [ActivityPub](https://wordpress.org/plugins/activitypub/)/[Pterotype](https://wordpress.org/plugins/pterotype/).
+This plugin provides a barebone JSON file with basic "node"-informations. The file can be extended by other WordPress plugins, like [OStatus](https://wordpress.org/plugins/ostatus-for-wordpress/), [Diaspora](https://github.com/pfefferle/wordpress-dandelion) or [ActivityPub](https://wordpress.org/plugins/activitypub/)/[Pterotype](https://wordpress.org/plugins/pterotype/).
 
 == Frequently Asked Questions ==
 
