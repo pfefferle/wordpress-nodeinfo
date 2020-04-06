@@ -79,5 +79,5 @@ To install a WordPress Plugin manually:
     * Download from [GitHub](https://github.com/pfefferle/wordpress-nodeinfo/releases)
 * If downloaded as a zip archive, extract the Plugin folder to your desktop.
 * With your FTP program, upload the Plugin folder to the `wp-content/plugins` folder in your WordPress directory online.
-* Go to [Plugins screen](https://codex.wordpress.org/Administration_Screens#Plugins) and find the newly uploaded Plugin in the list.
+* Go to [Plugins screen](https://wordpress.org/support/article/plugins-add-new-screen/) and find the newly uploaded Plugin in the list.
 * Click **Activate** to activate it.
