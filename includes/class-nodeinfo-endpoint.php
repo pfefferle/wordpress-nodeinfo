@@ -9,16 +9,20 @@ class Nodeinfo_Endpoint {
 	 */
 	public static function register_routes() {
 		register_rest_route(
-			'nodeinfo', '/discovery', array(
+			'nodeinfo',
+			'/discovery',
+			array(
 				array(
 					'methods'  => WP_REST_Server::READABLE,
 					'callback' => array( 'Nodeinfo_Endpoint', 'render_discovery' ),
-				)
+				),
 			)
 		);
 
 		register_rest_route(
-			'nodeinfo', '/(?P<version>[\.\d]+)', array(
+			'nodeinfo',
+			'/(?P<version>[\.\d]+)',
+			array(
 				array(
 					'methods'  => WP_REST_Server::READABLE,
 					'callback' => array( 'Nodeinfo_Endpoint', 'render_nodeinfo' ),
@@ -31,15 +35,18 @@ class Nodeinfo_Endpoint {
 								'1.0',
 								'1.1',
 								'2.0',
+								'2.1',
 							),
-						)
+						),
 					),
-				)
+				),
 			)
 		);
 
 		register_rest_route(
-			'nodeinfo2', '/(?P<version>[\.\d]+)', array(
+			'nodeinfo2',
+			'/(?P<version>[\.\d]+)',
+			array(
 				array(
 					'methods'  => WP_REST_Server::READABLE,
 					'callback' => array( 'Nodeinfo_Endpoint', 'render_nodeinfo2' ),
@@ -51,9 +58,30 @@ class Nodeinfo_Endpoint {
 							'enum' => array(
 								'1.0',
 							),
-						)
+						),
 					),
-				)
+				),
+			)
+		);
+
+		register_rest_route(
+			'serviceinfo',
+			'/(?P<version>[\.\d]+)',
+			array(
+				array(
+					'methods'  => WP_REST_Server::READABLE,
+					'callback' => array( 'Nodeinfo_Endpoint', 'render_serviceinfo' ),
+					'args' => array(
+						'version' => array(
+							'required' => true,
+							'type' => 'string',
+							'description' => __( 'The version of the ServiceInfo scheme', 'nodeinfo' ),
+							'enum' => array(
+								'1.0',
+							),
+						),
+					),
+				),
 			)
 		);
 	}
@@ -121,6 +149,21 @@ class Nodeinfo_Endpoint {
 	}
 
 	/**
+	 * Render the ServiceInfo file.
+	 *
+	 * @param  WP_REST_Request $request the request object
+	 * @return WP_REST_Response         the response object
+	 */
+	public static function render_serviceinfo( WP_REST_Request $request ) {
+		require_once( 'class-serviceinfo.php' );
+
+		$serviceinfo = new Serviceinfo( $request->get_param( 'version' ) );
+
+		// Create the response object
+		return new WP_REST_Response( $serviceinfo->to_array() );
+	}
+
+	/**
 	 * Add Host-Meta and WebFinger discovery links
 	 *
 	 * @param  array $jrd the JRD file used by Host-Meta and WebFinger
@@ -140,6 +183,15 @@ class Nodeinfo_Endpoint {
 		$jrd['links'][] = array(
 			'rel' => 'http://nodeinfo.diaspora.software/ns/schema/1.0',
 			'href' => get_rest_url( null, '/nodeinfo/1.0' ),
+		);
+
+		$jrd['links'][] = array(
+			'rel' => 'https://feneas.org/ns/serviceinfo',
+			'type' => 'application/ld+json',
+			'href' => get_rest_url( null, '/serviceinfo/1.0' ),
+			'properties' => array(
+				'https://feneas.org/ns/serviceinfo#software.name' => get_bloginfo( 'name', 'esc_attr' ),
+			),
 		);
 
 		return $jrd;

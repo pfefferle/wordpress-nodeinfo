@@ -17,7 +17,7 @@ class Nodeinfo2 {
 	public $metadata = array();
 
 	public function __construct( $version = '1.0' ) {
-		if ( in_array( $version, array( '1.0' ) ) ) {
+		if ( in_array( $version, array( '1.0' ), true ) ) {
 			$this->version = $version;
 		}
 
@@ -34,22 +34,30 @@ class Nodeinfo2 {
 		$posts = wp_count_posts();
 		$comments = wp_count_comments();
 
-		$this->usage = apply_filters( 'nodeinfo2_data_usage', array(
-			'users' => array(
-				'total' => (int) $users['total_users'],
+		$this->usage = apply_filters(
+			'nodeinfo2_data_usage',
+			array(
+				'users' => array(
+					'total' => (int) $users['total_users'],
+				),
+				'localPosts' => (int) $posts->publish,
+				'localComments' => (int) $comments->approved,
 			),
-			'localPosts' => (int) $posts->publish,
-			'localComments' => (int) $comments->approved,
-		), $this->version );
+			$this->version
+		);
 	}
 
 	public function generate_server() {
-		$this->server = apply_filters( 'nodeinfo2_data_server', array(
-			'baseUrl' => home_url( '/' ),
-			'name' => get_bloginfo( 'name' ),
-			'software' => 'wordpress',
-			'version' => get_bloginfo( 'version' ),
-		), $this->version );
+		$this->server = apply_filters(
+			'nodeinfo2_data_server',
+			array(
+				'baseUrl' => home_url( '/' ),
+				'name' => get_bloginfo( 'name' ),
+				'software' => 'wordpress',
+				'version' => get_bloginfo( 'version' ),
+			),
+			$this->version
+		);
 	}
 
 	public function generate_protocols() {

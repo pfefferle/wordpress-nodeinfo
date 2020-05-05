@@ -17,7 +17,7 @@ class Nodeinfo {
 	public $metadata = array();
 
 	public function __construct( $version = '2.0' ) {
-		if ( in_array( $version, array( '1.0', '1.1', '2.0' ) ) ) {
+		if ( in_array( $version, array( '1.0', '1.1', '2.0', '2.1' ), true ) ) {
 			$this->version = $version;
 		}
 
@@ -34,26 +34,40 @@ class Nodeinfo {
 		$posts = wp_count_posts();
 		$comments = wp_count_comments();
 
-		$this->usage = apply_filters( 'nodeinfo_data_usage', array(
-			'users' => array(
-				'total' => (int) $users['total_users'],
+		$this->usage = apply_filters(
+			'nodeinfo_data_usage',
+			array(
+				'users' => array(
+					'total' => (int) $users['total_users'],
+				),
+				'localPosts' => (int) $posts->publish,
+				'localComments' => (int) $comments->approved,
 			),
-			'localPosts' => (int) $posts->publish,
-			'localComments' => (int) $comments->approved,
-		), $this->version );
+			$this->version
+		);
 	}
 
 	public function generate_software() {
-		$this->software = apply_filters( 'nodeinfo_data_software', array(
+		$software = array(
 			'name' => 'wordpress',
 			'version' => get_bloginfo( 'version' ),
-		), $this->version );
+		);
+
+		if ( '2.1' === $this->version ) {
+			$software['repository'] = 'https://github.com/pfefferle/wordpress-nodeinfo';
+		}
+
+		$this->software = apply_filters(
+			'nodeinfo_data_software',
+			$software,
+			$this->version
+		);
 	}
 
 	public function generate_protocols() {
 		$protocols = $this->protocols;
 
-		if ( '2.0' == $this->version ) {
+		if ( '2.0' === $this->version ) {
 			$protocols = array();
 		} else {
 			$protocols['inbound'] = array( 'smtp' );
@@ -66,7 +80,7 @@ class Nodeinfo {
 	public function generate_services() {
 		$services = $this->services;
 
-		if ( '2.0' == $this->version ) {
+		if ( '2.0' === $this->version ) {
 			$services['inbound'] = array( 'atom1.0', 'rss2.0', 'pop3' );
 			$services['outbound'] = array( 'atom1.0', 'rss2.0', 'wordpress', 'smtp' );
 		} else {
