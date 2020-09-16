@@ -13,8 +13,9 @@ class Nodeinfo_Endpoint {
 			'/discovery',
 			array(
 				array(
-					'methods'  => WP_REST_Server::READABLE,
+					'methods' => WP_REST_Server::READABLE,
 					'callback' => array( 'Nodeinfo_Endpoint', 'render_discovery' ),
+					'permission_callback' => '__return_true',
 				),
 			)
 		);
@@ -24,8 +25,9 @@ class Nodeinfo_Endpoint {
 			'/(?P<version>[\.\d]+)',
 			array(
 				array(
-					'methods'  => WP_REST_Server::READABLE,
+					'methods' => WP_REST_Server::READABLE,
 					'callback' => array( 'Nodeinfo_Endpoint', 'render_nodeinfo' ),
+					'permission_callback' => '__return_true',
 					'args' => array(
 						'version' => array(
 							'required' => true,
@@ -48,8 +50,9 @@ class Nodeinfo_Endpoint {
 			'/(?P<version>[\.\d]+)',
 			array(
 				array(
-					'methods'  => WP_REST_Server::READABLE,
+					'methods' => WP_REST_Server::READABLE,
 					'callback' => array( 'Nodeinfo_Endpoint', 'render_nodeinfo2' ),
+					'permission_callback' => '__return_true',
 					'args' => array(
 						'version' => array(
 							'required' => true,
@@ -69,8 +72,9 @@ class Nodeinfo_Endpoint {
 			'/(?P<version>[\.\d]+)',
 			array(
 				array(
-					'methods'  => WP_REST_Server::READABLE,
+					'methods' => WP_REST_Server::READABLE,
 					'callback' => array( 'Nodeinfo_Endpoint', 'render_serviceinfo' ),
+					'permission_callback' => '__return_true',
 					'args' => array(
 						'version' => array(
 							'required' => true,

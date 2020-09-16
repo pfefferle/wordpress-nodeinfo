@@ -5,7 +5,7 @@
 **Tags:** nodeinfo, fediverse, ostatus, diaspora, activitypub  
 **Requires at least:** 4.9  
 **Tested up to:** 5.5  
-**Stable tag:** 1.0.4  
+**Stable tag:** 1.0.5  
 **Requires PHP:** 5.6  
 **License:** MIT  
 **License URI:** https://opensource.org/licenses/MIT  
@@ -23,6 +23,10 @@ This plugin provides a barebone JSON file with basic "node"-informations. The fi
 ## Changelog ##
 
 Project and support maintained on github at [pfefferle/wordpress-nodeinfo](https://github.com/pfefferle/wordpress-nodeinfo).
+
+### 1.0.5 ###
+
+* fix missing permission_callback issue
 
 ### 1.0.4 ###
 
