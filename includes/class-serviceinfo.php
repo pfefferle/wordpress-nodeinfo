@@ -46,8 +46,8 @@ class Serviceinfo {
 	}
 
 	public function generate_organisation() {
-		$this->server = apply_filters(
-			'serviceinfo_data_server',
+		$this->organisation = apply_filters(
+			'serviceinfo_data_organisation',
 			array(
 				'name' => get_bloginfo( 'name' ),
 				'contact' => get_option( 'admin_email' ),
