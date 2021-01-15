@@ -100,6 +100,10 @@ class Nodeinfo_Endpoint {
 		$discovery = array();
 		$discovery['links'] = array(
 			array(
+				'rel' => 'http://nodeinfo.diaspora.software/ns/schema/2.1',
+				'href' => get_rest_url( null, '/nodeinfo/2.1' ),
+			),
+			array(
 				'rel' => 'http://nodeinfo.diaspora.software/ns/schema/2.0',
 				'href' => get_rest_url( null, '/nodeinfo/2.0' ),
 			),
