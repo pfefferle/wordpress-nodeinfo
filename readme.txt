@@ -4,7 +4,7 @@ Contributors: pfefferle
 Donate link: https://notiz.blog/donate/
 Tags: nodeinfo, fediverse, ostatus, diaspora, activitypub
 Requires at least: 4.9
-Tested up to: 5.9
+Tested up to: 6.0
 Stable tag: 1.0.6
 Requires PHP: 5.6
 License: MIT
