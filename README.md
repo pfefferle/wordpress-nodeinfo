@@ -1,10 +1,10 @@
 # NodeInfo(2) #
 
-**Contributors:** [pfefferle](https://profiles.wordpress.org/pfefferle)  
+**Contributors:** [pfefferle](https://profiles.wordpress.org/pfefferle/)  
 **Donate link:** https://notiz.blog/donate/  
 **Tags:** nodeinfo, fediverse, ostatus, diaspora, activitypub  
 **Requires at least:** 4.9  
-**Tested up to:** 6.0  
+**Tested up to:** 6.1  
 **Stable tag:** 1.0.6  
 **Requires PHP:** 5.6  
 **License:** MIT  
