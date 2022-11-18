@@ -67,7 +67,7 @@ class Nodeinfo {
 	public function generate_protocols() {
 		$protocols = $this->protocols;
 
-		if ( '2.0' === $this->version ) {
+		if ( version_compare( $this->version, '2.0', '>=' ) ) {
 			$protocols = array();
 		} else {
 			$protocols['inbound'] = array( 'smtp' );
@@ -80,7 +80,7 @@ class Nodeinfo {
 	public function generate_services() {
 		$services = $this->services;
 
-		if ( '2.0' === $this->version ) {
+		if ( version_compare( $this->version, '2.0', '>=' ) ) {
 			$services['inbound'] = array( 'atom1.0', 'rss2.0', 'pop3' );
 			$services['outbound'] = array( 'atom1.0', 'rss2.0', 'wordpress', 'smtp' );
 		} else {
