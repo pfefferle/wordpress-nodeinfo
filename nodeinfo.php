@@ -29,6 +29,15 @@ function nodeinfo_init() {
 add_action( 'plugins_loaded', 'nodeinfo_init' );
 
 /**
+ * Plugin Version Number.
+ */
+function nodeinfo_version() {
+	$meta = nodeinfo_get_plugin_meta( array( 'Version' => 'Version' ) );
+
+	return $meta['Version'];
+}
+
+/**
  * Add rewrite rules
  */
 function nodeinfo_add_rewrite_rules() {
@@ -36,6 +45,32 @@ function nodeinfo_add_rewrite_rules() {
 	add_rewrite_rule( '^.well-known/x-nodeinfo2', 'index.php?rest_route=/nodeinfo2/1.0', 'top' );
 }
 add_action( 'init', 'nodeinfo_add_rewrite_rules', 1 );
+
+/**
+ * `get_plugin_data` wrapper
+ *
+ * @return array the plugin metadata array
+ */
+function nodeinfo_get_plugin_meta( $default_headers = array() ) {
+	if ( ! $default_headers ) {
+		$default_headers = array(
+			'Name'        => 'Plugin Name',
+			'PluginURI'   => 'Plugin URI',
+			'Version'     => 'Version',
+			'Description' => 'Description',
+			'Author'      => 'Author',
+			'AuthorURI'   => 'Author URI',
+			'TextDomain'  => 'Text Domain',
+			'DomainPath'  => 'Domain Path',
+			'Network'     => 'Network',
+			'RequiresWP'  => 'Requires at least',
+			'RequiresPHP' => 'Requires PHP',
+			'UpdateURI'   => 'Update URI',
+		);
+	}
+
+	return get_file_data( __FILE__, $default_headers, 'plugin' );
+}
 
 /**
  * Flush rewrite rules;

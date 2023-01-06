@@ -26,7 +26,8 @@ Project and support maintained on github at [pfefferle/wordpress-nodeinfo](https
 
 = 1.0.8 =
 
-* Fix link to WordPress repository.
+* fix link to WordPress repository (props @jeherve)
+* add generator object to metadata to link to plugin repository
 
 = 1.0.7 =
 

@@ -5,7 +5,7 @@
 **Tags:** nodeinfo, fediverse, ostatus, diaspora, activitypub  
 **Requires at least:** 4.9  
 **Tested up to:** 6.1  
-**Stable tag:** 1.0.8
+**Stable tag:** 1.0.8  
 **Requires PHP:** 5.6  
 **License:** MIT  
 **License URI:** https://opensource.org/licenses/MIT  
@@ -26,7 +26,8 @@ Project and support maintained on github at [pfefferle/wordpress-nodeinfo](https
 
 ### 1.0.8 ###
 
-* Fix link to WordPress repository.
+* fix link to WordPress repository (props @jeherve)
+* add generator object to metadata to link to plugin repository
 
 ### 1.0.7 ###
 
