@@ -54,7 +54,7 @@ class Nodeinfo {
 		);
 
 		if ( '2.1' === $this->version ) {
-			$software['repository'] = 'https://github.com/pfefferle/wordpress-nodeinfo';
+			$software['repository'] = 'https://github.com/wordpress/wordpress';
 		}
 
 		$this->software = apply_filters(
