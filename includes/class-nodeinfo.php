@@ -98,7 +98,7 @@ class Nodeinfo {
 		$metadata['generator'] = array(
 			'name' => 'NodeInfo WordPress-Plugin',
 			'version' => nodeinfo_version(),
-			'repository' => 'https://github.com/pfefferle/wordpress-nodeinfo/'
+			'repository' => 'https://github.com/pfefferle/wordpress-nodeinfo/',
 		);
 
 		$this->metadata = apply_filters( 'nodeinfo_data_metadata', $metadata, $this->version );
