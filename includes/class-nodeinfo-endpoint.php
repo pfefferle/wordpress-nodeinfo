@@ -66,28 +66,6 @@ class Nodeinfo_Endpoint {
 				),
 			)
 		);
-
-		register_rest_route(
-			'serviceinfo',
-			'/(?P<version>[\.\d]+)',
-			array(
-				array(
-					'methods' => WP_REST_Server::READABLE,
-					'callback' => array( 'Nodeinfo_Endpoint', 'render_serviceinfo' ),
-					'permission_callback' => '__return_true',
-					'args' => array(
-						'version' => array(
-							'required' => true,
-							'type' => 'string',
-							'description' => __( 'The version of the ServiceInfo scheme', 'nodeinfo' ),
-							'enum' => array(
-								'1.0',
-							),
-						),
-					),
-				),
-			)
-		);
 	}
 
 	/**
@@ -157,27 +135,17 @@ class Nodeinfo_Endpoint {
 	}
 
 	/**
-	 * Render the ServiceInfo file.
-	 *
-	 * @param  WP_REST_Request $request the request object
-	 * @return WP_REST_Response         the response object
-	 */
-	public static function render_serviceinfo( WP_REST_Request $request ) {
-		require_once( 'class-serviceinfo.php' );
-
-		$serviceinfo = new Serviceinfo( $request->get_param( 'version' ) );
-
-		// Create the response object
-		return new WP_REST_Response( $serviceinfo->to_array() );
-	}
-
-	/**
 	 * Add Host-Meta and WebFinger discovery links
 	 *
 	 * @param  array $jrd the JRD file used by Host-Meta and WebFinger
 	 * @return array      the extended JRD file
 	 */
 	public static function render_jrd( $jrd ) {
+		$jrd['links'][] = array(
+			'rel' => 'http://nodeinfo.diaspora.software/ns/schema/2.1',
+			'href' => get_rest_url( null, '/nodeinfo/2.1' ),
+		);
+
 		$jrd['links'][] = array(
 			'rel' => 'http://nodeinfo.diaspora.software/ns/schema/2.0',
 			'href' => get_rest_url( null, '/nodeinfo/2.0' ),
@@ -191,15 +159,6 @@ class Nodeinfo_Endpoint {
 		$jrd['links'][] = array(
 			'rel' => 'http://nodeinfo.diaspora.software/ns/schema/1.0',
 			'href' => get_rest_url( null, '/nodeinfo/1.0' ),
-		);
-
-		$jrd['links'][] = array(
-			'rel' => 'https://feneas.org/ns/serviceinfo',
-			'type' => 'application/ld+json',
-			'href' => get_rest_url( null, '/serviceinfo/1.0' ),
-			'properties' => array(
-				'https://feneas.org/ns/serviceinfo#software.name' => get_bloginfo( 'name', 'esc_attr' ),
-			),
 		);
 
 		return $jrd;
