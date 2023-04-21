@@ -30,7 +30,18 @@ class Nodeinfo2 {
 	}
 
 	public function generate_usage() {
-		$users = count_users();
+		$users = get_users(
+			array(
+				'capability__in' => array( 'publish_posts' ),
+			)
+		);
+
+		if ( is_array( $users ) ) {
+			$users = count( $users );
+		} else {
+			$users = 1;
+		}
+
 		$posts = wp_count_posts();
 		$comments = wp_count_comments();
 
@@ -38,7 +49,7 @@ class Nodeinfo2 {
 			'nodeinfo2_data_usage',
 			array(
 				'users' => array(
-					'total' => (int) $users['total_users'],
+					'total' => $users,
 				),
 				'localPosts' => (int) $posts->publish,
 				'localComments' => (int) $comments->approved,
