@@ -3,7 +3,7 @@
  * Plugin Name: NodeInfo
  * Plugin URI: https://github.com/pfefferle/wordpress-nodeinfo/
  * Description: NodeInfo is an effort to create a standardized way of exposing metadata about a server running one of the distributed social networks.
- * Version: 2.1.0
+ * Version: 2.1.1
  * Author: Matthias Pfefferle
  * Author URI: https://notiz.blog/
  * License: MIT
@@ -26,7 +26,7 @@ function nodeinfo_init() {
 	add_filter( 'webfinger_post_data', array( 'Nodeinfo_Endpoint', 'render_jrd' ), 10, 3 );
 	add_filter( 'host_meta', array( 'Nodeinfo_Endpoint', 'render_jrd' ) );
 }
-add_action( 'plugins_loaded', 'nodeinfo_init' );
+add_action( 'init', 'nodeinfo_init', 9 );
 
 /**
  * Plugin Version Number.
