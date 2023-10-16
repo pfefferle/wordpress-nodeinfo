@@ -13,8 +13,8 @@ class Nodeinfo_Endpoint {
 			'/discovery',
 			array(
 				array(
-					'methods' => WP_REST_Server::READABLE,
-					'callback' => array( 'Nodeinfo_Endpoint', 'render_discovery' ),
+					'methods'             => WP_REST_Server::READABLE,
+					'callback'            => array( 'Nodeinfo_Endpoint', 'render_discovery' ),
 					'permission_callback' => '__return_true',
 				),
 			)
@@ -25,15 +25,15 @@ class Nodeinfo_Endpoint {
 			'/(?P<version>[\.\d]+)',
 			array(
 				array(
-					'methods' => WP_REST_Server::READABLE,
-					'callback' => array( 'Nodeinfo_Endpoint', 'render_nodeinfo' ),
+					'methods'             => WP_REST_Server::READABLE,
+					'callback'            => array( 'Nodeinfo_Endpoint', 'render_nodeinfo' ),
 					'permission_callback' => '__return_true',
-					'args' => array(
+					'args'                => array(
 						'version' => array(
-							'required' => true,
-							'type' => 'string',
+							'required'    => true,
+							'type'        => 'string',
 							'description' => __( 'The version of the NodeInfo scheme', 'nodeinfo' ),
-							'enum' => array(
+							'enum'        => array(
 								'1.0',
 								'1.1',
 								'2.0',
@@ -50,15 +50,15 @@ class Nodeinfo_Endpoint {
 			'/(?P<version>[\.\d]+)',
 			array(
 				array(
-					'methods' => WP_REST_Server::READABLE,
-					'callback' => array( 'Nodeinfo_Endpoint', 'render_nodeinfo2' ),
+					'methods'             => WP_REST_Server::READABLE,
+					'callback'            => array( 'Nodeinfo_Endpoint', 'render_nodeinfo2' ),
 					'permission_callback' => '__return_true',
-					'args' => array(
+					'args'                => array(
 						'version' => array(
-							'required' => true,
-							'type' => 'string',
+							'required'    => true,
+							'type'        => 'string',
 							'description' => __( 'The version of the NodeInfo2 scheme', 'nodeinfo' ),
-							'enum' => array(
+							'enum'        => array(
 								'1.0',
 							),
 						),
@@ -75,22 +75,22 @@ class Nodeinfo_Endpoint {
 	 * @return WP_REST_Response         the response object
 	 */
 	public static function render_discovery( WP_REST_Request $request ) {
-		$discovery = array();
+		$discovery          = array();
 		$discovery['links'] = array(
 			array(
-				'rel' => 'http://nodeinfo.diaspora.software/ns/schema/2.1',
+				'rel'  => 'http://nodeinfo.diaspora.software/ns/schema/2.1',
 				'href' => get_rest_url( null, '/nodeinfo/2.1' ),
 			),
 			array(
-				'rel' => 'http://nodeinfo.diaspora.software/ns/schema/2.0',
+				'rel'  => 'http://nodeinfo.diaspora.software/ns/schema/2.0',
 				'href' => get_rest_url( null, '/nodeinfo/2.0' ),
 			),
 			array(
-				'rel' => 'http://nodeinfo.diaspora.software/ns/schema/1.1',
+				'rel'  => 'http://nodeinfo.diaspora.software/ns/schema/1.1',
 				'href' => get_rest_url( null, '/nodeinfo/1.1' ),
 			),
 			array(
-				'rel' => 'http://nodeinfo.diaspora.software/ns/schema/1.0',
+				'rel'  => 'http://nodeinfo.diaspora.software/ns/schema/1.0',
 				'href' => get_rest_url( null, '/nodeinfo/1.0' ),
 			),
 		);
@@ -111,7 +111,7 @@ class Nodeinfo_Endpoint {
 	 * @return WP_REST_Response         the response object
 	 */
 	public static function render_nodeinfo( WP_REST_Request $request ) {
-		require_once( 'class-nodeinfo.php' );
+		require_once 'class-nodeinfo.php';
 
 		$nodeinfo = new Nodeinfo( $request->get_param( 'version' ) );
 
@@ -126,7 +126,7 @@ class Nodeinfo_Endpoint {
 	 * @return WP_REST_Response         the response object
 	 */
 	public static function render_nodeinfo2( WP_REST_Request $request ) {
-		require_once( 'class-nodeinfo2.php' );
+		require_once 'class-nodeinfo2.php';
 
 		$nodeinfo2 = new Nodeinfo2( $request->get_param( 'version' ) );
 
@@ -142,22 +142,22 @@ class Nodeinfo_Endpoint {
 	 */
 	public static function render_jrd( $jrd ) {
 		$jrd['links'][] = array(
-			'rel' => 'http://nodeinfo.diaspora.software/ns/schema/2.1',
+			'rel'  => 'http://nodeinfo.diaspora.software/ns/schema/2.1',
 			'href' => get_rest_url( null, '/nodeinfo/2.1' ),
 		);
 
 		$jrd['links'][] = array(
-			'rel' => 'http://nodeinfo.diaspora.software/ns/schema/2.0',
+			'rel'  => 'http://nodeinfo.diaspora.software/ns/schema/2.0',
 			'href' => get_rest_url( null, '/nodeinfo/2.0' ),
 		);
 
 		$jrd['links'][] = array(
-			'rel' => 'http://nodeinfo.diaspora.software/ns/schema/1.1',
+			'rel'  => 'http://nodeinfo.diaspora.software/ns/schema/1.1',
 			'href' => get_rest_url( null, '/nodeinfo/1.1' ),
 		);
 
 		$jrd['links'][] = array(
-			'rel' => 'http://nodeinfo.diaspora.software/ns/schema/1.0',
+			'rel'  => 'http://nodeinfo.diaspora.software/ns/schema/1.0',
 			'href' => get_rest_url( null, '/nodeinfo/1.0' ),
 		);
 

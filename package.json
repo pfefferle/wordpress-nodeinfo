@@ -20,8 +20,8 @@
   },
   "homepage": "https://github.com/pfefferle/wordpress-nodeinfo#readme",
   "devDependencies": {
-    "grunt": "^1.0.3",
-    "grunt-wp-i18n": "^1.0.2",
-    "grunt-wp-readme-to-markdown": "^2.0.1"
+    "grunt": "^1.6.1",
+    "grunt-wp-i18n": "^1.0.3",
+    "grunt-wp-readme-to-markdown": "^2.1.0"
   }
 }

@@ -5,16 +5,16 @@
  * @link https://github.com/jaywink/nodeinfo2
  */
 class Nodeinfo2 {
-	public $version = '1.0';
-	public $server = array();
-	public $usage = array();
+	public $version           = '1.0';
+	public $server            = array();
+	public $usage             = array();
 	public $openRegistrations = false; // phpcs:ignore
-	public $services = array(
-		'inbound' => array(),
+	public $services          = array(
+		'inbound'  => array(),
 		'outbound' => array(),
 	);
-	public $protocols = array();
-	public $metadata = array();
+	public $protocols         = array();
+	public $metadata          = array();
 
 	public function __construct( $version = '1.0' ) {
 		if ( in_array( $version, array( '1.0' ), true ) ) {
@@ -42,16 +42,18 @@ class Nodeinfo2 {
 			$users = 1;
 		}
 
-		$posts = wp_count_posts();
+		$posts    = wp_count_posts();
 		$comments = wp_count_comments();
 
 		$this->usage = apply_filters(
 			'nodeinfo2_data_usage',
 			array(
-				'users' => array(
-					'total' => $users,
+				'users'         => array(
+					'total'          => $users,
+					'activeMonth'    => nodeinfo_get_active_users( '1 month ago' ),
+					'activeHalfyear' => nodeinfo_get_active_users( '6 month ago' ),
 				),
-				'localPosts' => (int) $posts->publish,
+				'localPosts'    => (int) $posts->publish,
 				'localComments' => (int) $comments->approved,
 			),
 			$this->version
@@ -62,10 +64,10 @@ class Nodeinfo2 {
 		$this->server = apply_filters(
 			'nodeinfo2_data_server',
 			array(
-				'baseUrl' => home_url( '/' ),
-				'name' => get_bloginfo( 'name' ),
+				'baseUrl'  => home_url( '/' ),
+				'name'     => get_bloginfo( 'name' ),
 				'software' => 'wordpress',
-				'version' => get_bloginfo( 'version' ),
+				'version'  => get_bloginfo( 'version' ),
 			),
 			$this->version
 		);
@@ -78,7 +80,7 @@ class Nodeinfo2 {
 	public function generate_services() {
 		$services = $this->services;
 
-		$services['inbound'] = array( 'atom1.0', 'rss2.0', 'wordpress', 'pop3' );
+		$services['inbound']  = array( 'atom1.0', 'rss2.0', 'wordpress', 'pop3' );
 		$services['outbound'] = array( 'atom1.0', 'rss2.0', 'wordpress', 'smtp' );
 
 		$this->services = apply_filters( 'nodeinfo2_data_services', $services, $this->version );

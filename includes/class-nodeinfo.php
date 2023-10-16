@@ -5,16 +5,16 @@
  * @link https://github.com/jhass/nodeinfo
  */
 class Nodeinfo {
-	public $version = '2.0';
-	public $software = array();
-	public $usage = array();
+	public $version           = '2.0';
+	public $software          = array();
+	public $usage             = array();
 	public $openRegistrations = false; // phpcs:ignore
-	public $services = array(
-		'inbound' => array(),
+	public $services          = array(
+		'inbound'  => array(),
 		'outbound' => array(),
 	);
-	public $protocols = array();
-	public $metadata = array();
+	public $protocols         = array();
+	public $metadata          = array();
 
 	public function __construct( $version = '2.0' ) {
 		if ( in_array( $version, array( '1.0', '1.1', '2.0', '2.1' ), true ) ) {
@@ -32,6 +32,7 @@ class Nodeinfo {
 	public function generate_usage() {
 		$users = get_users(
 			array(
+				'fields'         => 'ID',
 				'capability__in' => array( 'publish_posts' ),
 			)
 		);
@@ -42,16 +43,18 @@ class Nodeinfo {
 			$users = 1;
 		}
 
-		$posts = wp_count_posts();
+		$posts    = wp_count_posts();
 		$comments = wp_count_comments();
 
 		$this->usage = apply_filters(
 			'nodeinfo_data_usage',
 			array(
-				'users' => array(
-					'total' => $users,
+				'users'         => array(
+					'total'          => $users,
+					'activeMonth'    => nodeinfo_get_active_users( '1 month ago' ),
+					'activeHalfyear' => nodeinfo_get_active_users( '6 month ago' ),
 				),
-				'localPosts' => (int) $posts->publish,
+				'localPosts'    => (int) $posts->publish,
 				'localComments' => (int) $comments->approved,
 			),
 			$this->version
@@ -60,7 +63,7 @@ class Nodeinfo {
 
 	public function generate_software() {
 		$software = array(
-			'name' => 'wordpress',
+			'name'    => 'wordpress',
 			'version' => get_bloginfo( 'version' ),
 		);
 
@@ -81,7 +84,7 @@ class Nodeinfo {
 		if ( version_compare( $this->version, '2.0', '>=' ) ) {
 			$protocols = array();
 		} else {
-			$protocols['inbound'] = array( 'smtp' );
+			$protocols['inbound']  = array( 'smtp' );
 			$protocols['outbound'] = array( 'smtp' );
 		}
 
@@ -92,7 +95,7 @@ class Nodeinfo {
 		$services = $this->services;
 
 		if ( version_compare( $this->version, '2.0', '>=' ) ) {
-			$services['inbound'] = array( 'atom1.0', 'rss2.0', 'pop3' );
+			$services['inbound']  = array( 'atom1.0', 'rss2.0', 'pop3' );
 			$services['outbound'] = array( 'atom1.0', 'rss2.0', 'wordpress', 'smtp' );
 		} else {
 			$services['outbound'] = array( 'smtp' );
@@ -107,8 +110,8 @@ class Nodeinfo {
 		$metadata['email'] = get_option( 'admin_email' );
 
 		$metadata['generator'] = array(
-			'name' => 'NodeInfo WordPress-Plugin',
-			'version' => nodeinfo_version(),
+			'name'       => 'NodeInfo WordPress-Plugin',
+			'version'    => nodeinfo_version(),
 			'repository' => 'https://github.com/pfefferle/wordpress-nodeinfo/',
 		);
 
