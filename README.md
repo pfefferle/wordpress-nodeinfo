@@ -1,4 +1,4 @@
-# NodeInfo(2) #
+ # NodeInfo(2) #
 
 **Contributors:** [pfefferle](https://profiles.wordpress.org/pfefferle/)  
 **Donate link:** https://notiz.blog/donate/  
@@ -24,59 +24,23 @@ This plugin provides a barebone JSON file with basic "node"-informations. The fi
 
 Project and support maintained on github at [pfefferle/wordpress-nodeinfo](https://github.com/pfefferle/wordpress-nodeinfo).
 
-### 2.2.0 ###
-
-* add MAUs
-
-### 2.1.1 ###
-
-* load plugin on init, to keep up with changes on the ActivityPub side
-
-### 2.1.0 ###
-
-* count only users that can "publish_posts"
-
-### 2.0.0 ###
-
-* removed support for ServiceInfo, as it never caught on
-
-### 1.0.8 ###
-
-* fix link to WordPress repository (props @jeherve)
-* add generator object to metadata to link to plugin repository
-
-### 1.0.7 ###
-
-* NodeInfo 2.1 protocols field has to be an array, not an object
-
-### 1.0.6 ###
-
-* add autodiscovery link for nodeinfo 2.1
-* fix some typos/copy&paste issues
-
-### 1.0.5 ###
-
-* fix missing permission_callback issue
-
-### 1.0.4 ###
-
-* fixed whitespace problem
-
-### 1.0.3 ###
-
-* added admin_email to metadata, to be able to "Manage your instance" on https://fediverse.network/manage/
-
-### 1.0.2 ###
-
-* fixed JSON schema (thanks @hrefhref)
-
-### 1.0.1 ###
-
-* use `home_url` insted of `site_url`
-
-### 1.0.0 ###
-
-* initial
+| Version | Release Notes                                            |
+|---------|----------------------------------------------------------|
+| 2.2.0   | Add MAUs                                                |
+| 2.1.1   | Load plugin on init, to keep up with changes on the ActivityPub side |
+| 2.1.0   | Count only users that can "publish_posts"              |
+| 2.0.0   | Removed support for ServiceInfo, as it never caught on |
+| 1.0.8   | Fix link to WordPress repository (props @jeherve)      |
+|         | Add generator object to metadata to link to plugin repository |
+| 1.0.7   | NodeInfo 2.1 protocols field has to be an array, not an object |
+| 1.0.6   | Add autodiscovery link for nodeinfo 2.1               |
+|         | Fix some typos/copy&paste issues                      |
+| 1.0.5   | Fix missing permission_callback issue                 |
+| 1.0.4   | Fixed whitespace problem                               |
+| 1.0.3   | Added admin_email to metadata, to be able to "Manage your instance" on https://fediverse.network/manage/ |
+| 1.0.2   | Fixed JSON schema (thanks @hrefhref)                   |
+| 1.0.1   | Use `home_url` instead of `site_url`                    |
+| 1.0.0   | Initial                                                |
 
 ## Installation ##
 
