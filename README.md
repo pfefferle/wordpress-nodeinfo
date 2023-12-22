@@ -5,7 +5,7 @@
 **Tags:** nodeinfo, fediverse, ostatus, diaspora, activitypub  
 **Requires at least:** 4.9  
 **Tested up to:** 6.4  
-**Stable tag:** 2.2.0  
+**Stable tag:** 2.3.0  
 **Requires PHP:** 5.6  
 **License:** MIT  
 **License URI:** https://opensource.org/licenses/MIT  
@@ -23,6 +23,10 @@ This plugin provides a barebone JSON file with basic "node"-informations. The fi
 ## Changelog ##
 
 Project and support maintained on github at [pfefferle/wordpress-nodeinfo](https://github.com/pfefferle/wordpress-nodeinfo).
+
+### 2.3.0 ###
+
+* add nodeName, nodeDescription and nodeIcon to meta array
 
 ### 2.2.0 ###
 

@@ -107,13 +107,15 @@ class Nodeinfo {
 	public function generate_metadata() {
 		$metadata = $this->metadata;
 
-		$metadata['email'] = get_option( 'admin_email' );
-
 		$metadata['generator'] = array(
 			'name'       => 'NodeInfo WordPress-Plugin',
 			'version'    => nodeinfo_version(),
 			'repository' => 'https://github.com/pfefferle/wordpress-nodeinfo/',
 		);
+
+		$metadata['nodeName']        = \get_bloginfo( 'name' );
+		$metadata['nodeDescription'] = \get_bloginfo( 'description' );
+		$metadata['nodeIcon']        = \get_site_icon_url();
 
 		$this->metadata = apply_filters( 'nodeinfo_data_metadata', $metadata, $this->version );
 	}
