@@ -30,3 +30,19 @@ function nodeinfo_get_active_users( $duration = '1 month ago' ) {
 		)
 	);
 }
+
+/**
+ * Get the masked WordPress version to only show the major and minor version.
+ *
+ * @return string The masked version.
+ */
+function nodeinfo_get_masked_version() {
+	// only show the major and minor version
+	$version = get_bloginfo( 'version' );
+	// strip the RC or beta part
+	$version = preg_replace( '/-.*$/', '', $version );
+	$version = explode( '.', $version );
+	$version = array_slice( $version, 0, 2 );
+
+	return implode( '.', $version );
+}

@@ -64,7 +64,7 @@ class Nodeinfo {
 	public function generate_software() {
 		$software = array(
 			'name'    => 'wordpress',
-			'version' => get_bloginfo( 'version' ),
+			'version' => nodeinfo_get_masked_version(),
 		);
 
 		if ( '2.1' === $this->version ) {

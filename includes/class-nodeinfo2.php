@@ -67,7 +67,7 @@ class Nodeinfo2 {
 				'baseUrl'  => home_url( '/' ),
 				'name'     => get_bloginfo( 'name' ),
 				'software' => 'wordpress',
-				'version'  => get_bloginfo( 'version' ),
+				'version'  => nodeinfo_get_masked_version(),
 			),
 			$this->version
 		);
