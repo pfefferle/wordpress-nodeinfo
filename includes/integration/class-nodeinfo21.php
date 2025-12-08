@@ -71,11 +71,11 @@ class Nodeinfo21 {
 			$schema['properties'],
 			array(
 				'version'           => array(
-					'description' => __( 'The NodeInfo schema version.', 'nodeinfo' ),
+					'description' => 'The NodeInfo schema version.',
 					'type'        => 'string',
 				),
 				'software'          => array(
-					'description' => __( 'Metadata about server software in use.', 'nodeinfo' ),
+					'description' => 'Metadata about server software in use.',
 					'type'        => 'object',
 					'properties'  => array(
 						'name'       => array( 'type' => 'string' ),
@@ -91,12 +91,12 @@ class Nodeinfo21 {
 					),
 				),
 				'protocols'         => array(
-					'description' => __( 'The protocols supported on this server.', 'nodeinfo' ),
+					'description' => 'The protocols supported on this server.',
 					'type'        => 'array',
 					'items'       => array( 'type' => 'string' ),
 				),
 				'services'          => array(
-					'description' => __( 'Third party sites this server can connect to.', 'nodeinfo' ),
+					'description' => 'Third party sites this server can connect to.',
 					'type'        => 'object',
 					'properties'  => array(
 						'inbound'  => array(
@@ -110,11 +110,11 @@ class Nodeinfo21 {
 					),
 				),
 				'openRegistrations' => array(
-					'description' => __( 'Whether this server allows open self-registration.', 'nodeinfo' ),
+					'description' => 'Whether this server allows open self-registration.',
 					'type'        => 'boolean',
 				),
 				'usage'             => array(
-					'description' => __( 'Usage statistics for this server.', 'nodeinfo' ),
+					'description' => 'Usage statistics for this server.',
 					'type'        => 'object',
 					'properties'  => array(
 						'users'         => array(
@@ -130,7 +130,7 @@ class Nodeinfo21 {
 					),
 				),
 				'metadata'          => array(
-					'description' => __( 'Free form key value pairs for software specific values.', 'nodeinfo' ),
+					'description' => 'Free form key value pairs for software specific values.',
 					'type'        => 'object',
 				),
 			)

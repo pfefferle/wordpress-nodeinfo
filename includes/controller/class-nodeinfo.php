@@ -54,7 +54,7 @@ class Nodeinfo extends WP_REST_Controller {
 			array(
 				'args'   => array(
 					'version' => array(
-						'description' => __( 'The NodeInfo schema version.', 'nodeinfo' ),
+						'description' => 'The NodeInfo schema version.',
 						'type'        => 'string',
 						'enum'        => $versions,
 						'required'    => true,

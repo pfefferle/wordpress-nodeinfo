@@ -38,7 +38,7 @@ class Nodeinfo2 extends WP_REST_Controller {
 			array(
 				'args'   => array(
 					'version' => array(
-						'description' => __( 'The NodeInfo2 schema version.', 'nodeinfo' ),
+						'description' => 'The NodeInfo2 schema version.',
 						'type'        => 'string',
 						'enum'        => array( '1.0' ),
 						'required'    => true,
@@ -143,12 +143,12 @@ class Nodeinfo2 extends WP_REST_Controller {
 			'type'       => 'object',
 			'properties' => array(
 				'version'           => array(
-					'description' => __( 'The NodeInfo2 schema version.', 'nodeinfo' ),
+					'description' => 'The NodeInfo2 schema version.',
 					'type'        => 'string',
 					'enum'        => array( '1.0' ),
 				),
 				'server'            => array(
-					'description' => __( 'Metadata about the server.', 'nodeinfo' ),
+					'description' => 'Metadata about the server.',
 					'type'        => 'object',
 					'properties'  => array(
 						'baseUrl'  => array(
@@ -167,14 +167,14 @@ class Nodeinfo2 extends WP_REST_Controller {
 					),
 				),
 				'protocols'         => array(
-					'description' => __( 'The protocols supported on this server.', 'nodeinfo' ),
+					'description' => 'The protocols supported on this server.',
 					'type'        => 'array',
 					'items'       => array(
 						'type' => 'string',
 					),
 				),
 				'services'          => array(
-					'description' => __( 'Third party sites this server can connect to.', 'nodeinfo' ),
+					'description' => 'Third party sites this server can connect to.',
 					'type'        => 'object',
 					'properties'  => array(
 						'inbound'  => array(
@@ -192,11 +192,11 @@ class Nodeinfo2 extends WP_REST_Controller {
 					),
 				),
 				'openRegistrations' => array(
-					'description' => __( 'Whether this server allows open self-registration.', 'nodeinfo' ),
+					'description' => 'Whether this server allows open self-registration.',
 					'type'        => 'boolean',
 				),
 				'usage'             => array(
-					'description' => __( 'Usage statistics for this server.', 'nodeinfo' ),
+					'description' => 'Usage statistics for this server.',
 					'type'        => 'object',
 					'properties'  => array(
 						'users'         => array(
@@ -222,7 +222,7 @@ class Nodeinfo2 extends WP_REST_Controller {
 					),
 				),
 				'metadata'          => array(
-					'description' => __( 'Free form key value pairs for software specific values.', 'nodeinfo' ),
+					'description' => 'Free form key value pairs for software specific values.',
 					'type'        => 'object',
 				),
 			),
