@@ -1,9 +1,9 @@
 <?php
 /**
- * NodeInfo 1.1 Integration.
+ * NodeInfo 2.2 Integration.
  *
  * @package Nodeinfo
- * @link https://nodeinfo.diaspora.software/protocol/1.1
+ * @link https://nodeinfo.diaspora.software/protocol/2.2
  */
 
 namespace Nodeinfo\Integration;
@@ -12,14 +12,14 @@ use function Nodeinfo\get_active_users;
 use function Nodeinfo\get_masked_version;
 
 /**
- * NodeInfo 1.1 Integration class.
+ * NodeInfo 2.2 Integration class.
  */
-class Nodeinfo11 {
+class Nodeinfo22 {
 
 	/**
 	 * The version identifier.
 	 */
-	const VERSION = '1.1';
+	const VERSION = '2.2';
 
 	/**
 	 * Initialize the integration.
@@ -29,10 +29,10 @@ class Nodeinfo11 {
 		add_filter( 'nodeinfo_discovery_links', array( __CLASS__, 'discovery_link' ) );
 		add_filter( 'nodeinfo_schema', array( __CLASS__, 'schema' ) );
 		add_filter( 'nodeinfo_data_software', array( __CLASS__, 'software' ), 10, 2 );
-		add_filter( 'nodeinfo_data_protocols', array( __CLASS__, 'protocols' ), 10, 2 );
 		add_filter( 'nodeinfo_data_services', array( __CLASS__, 'services' ), 10, 2 );
 		add_filter( 'nodeinfo_data_usage', array( __CLASS__, 'usage' ), 10, 2 );
 		add_filter( 'nodeinfo_data_metadata', array( __CLASS__, 'metadata' ), 10, 2 );
+		add_filter( 'nodeinfo_data', array( __CLASS__, 'add_instance' ), 10, 2 );
 	}
 
 	/**
@@ -61,13 +61,13 @@ class Nodeinfo11 {
 	}
 
 	/**
-	 * Adds the schema for NodeInfo 1.1.
+	 * Adds the schema for NodeInfo 2.2.
 	 *
 	 * @param array $schema The schema.
 	 * @return array The modified schema.
 	 */
 	public static function schema( $schema ) {
-		// NodeInfo 1.1 schema - same as 1.0, protocols uses inbound/outbound structure.
+		// NodeInfo 2.2 schema - adds instance and activeWeek.
 		$schema['properties'] = array_merge(
 			$schema['properties'],
 			array(
@@ -75,27 +75,34 @@ class Nodeinfo11 {
 					'description' => 'The NodeInfo schema version.',
 					'type'        => 'string',
 				),
+				'instance'          => array(
+					'description' => 'Metadata about this specific instance.',
+					'type'        => 'object',
+					'properties'  => array(
+						'name'        => array( 'type' => 'string' ),
+						'description' => array( 'type' => 'string' ),
+					),
+				),
 				'software'          => array(
 					'description' => 'Metadata about server software in use.',
 					'type'        => 'object',
 					'properties'  => array(
-						'name'    => array( 'type' => 'string' ),
-						'version' => array( 'type' => 'string' ),
+						'name'       => array( 'type' => 'string' ),
+						'version'    => array( 'type' => 'string' ),
+						'repository' => array(
+							'type'   => 'string',
+							'format' => 'uri',
+						),
+						'homepage'   => array(
+							'type'   => 'string',
+							'format' => 'uri',
+						),
 					),
 				),
 				'protocols'         => array(
 					'description' => 'The protocols supported on this server.',
-					'type'        => 'object',
-					'properties'  => array(
-						'inbound'  => array(
-							'type'  => 'array',
-							'items' => array( 'type' => 'string' ),
-						),
-						'outbound' => array(
-							'type'  => 'array',
-							'items' => array( 'type' => 'string' ),
-						),
-					),
+					'type'        => 'array',
+					'items'       => array( 'type' => 'string' ),
 				),
 				'services'          => array(
 					'description' => 'Third party sites this server can connect to.',
@@ -125,6 +132,7 @@ class Nodeinfo11 {
 								'total'          => array( 'type' => 'integer' ),
 								'activeMonth'    => array( 'type' => 'integer' ),
 								'activeHalfyear' => array( 'type' => 'integer' ),
+								'activeWeek'     => array( 'type' => 'integer' ),
 							),
 						),
 						'localPosts'    => array( 'type' => 'integer' ),
@@ -154,29 +162,11 @@ class Nodeinfo11 {
 		}
 
 		// phpcs:ignore WordPress.WP.CapitalPDangit.MisspelledInText -- NodeInfo spec uses lowercase.
-		$software['name']    = 'wordpress';
-		$software['version'] = get_masked_version();
+		$software['name']       = 'wordpress';
+		$software['version']    = get_masked_version();
+		$software['repository'] = 'https://github.com/wordpress/wordpress';
 
 		return $software;
-	}
-
-	/**
-	 * Adds protocols.
-	 *
-	 * @param array  $protocols The protocols data.
-	 * @param string $version   The NodeInfo version.
-	 * @return array The modified protocols data.
-	 */
-	public static function protocols( $protocols, $version ) {
-		if ( self::VERSION !== $version ) {
-			return $protocols;
-		}
-
-		// NodeInfo 1.1 uses inbound/outbound structure.
-		$protocols['inbound']  = array();
-		$protocols['outbound'] = array();
-
-		return $protocols;
 	}
 
 	/**
@@ -191,8 +181,8 @@ class Nodeinfo11 {
 			return $services;
 		}
 
-		$services['inbound']  = array();
-		$services['outbound'] = array( 'smtp' );
+		$services['inbound']  = array( 'atom1.0', 'rss2.0', 'pop3' );
+		$services['outbound'] = array( 'atom1.0', 'rss2.0', 'wordpress', 'smtp' );
 
 		return $services;
 	}
@@ -225,6 +215,7 @@ class Nodeinfo11 {
 			'total'          => $user_count,
 			'activeMonth'    => get_active_users( '1 month ago' ),
 			'activeHalfyear' => get_active_users( '6 month ago' ),
+			'activeWeek'     => get_active_users( '1 week ago' ),
 		);
 
 		$usage['localPosts']    = (int) $posts->publish;
@@ -250,5 +241,25 @@ class Nodeinfo11 {
 		$metadata['nodeIcon']        = get_site_icon_url();
 
 		return $metadata;
+	}
+
+	/**
+	 * Adds instance information (new in 2.2).
+	 *
+	 * @param array  $nodeinfo The NodeInfo data.
+	 * @param string $version  The NodeInfo version.
+	 * @return array The modified NodeInfo data.
+	 */
+	public static function add_instance( $nodeinfo, $version ) {
+		if ( self::VERSION !== $version ) {
+			return $nodeinfo;
+		}
+
+		$nodeinfo['instance'] = array(
+			'name'        => get_bloginfo( 'name' ),
+			'description' => get_bloginfo( 'description' ),
+		);
+
+		return $nodeinfo;
 	}
 }

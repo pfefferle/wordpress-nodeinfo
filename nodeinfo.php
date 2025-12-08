@@ -37,6 +37,7 @@ function nodeinfo_init() {
 	Nodeinfo\Integration\Nodeinfo11::init();
 	Nodeinfo\Integration\Nodeinfo20::init();
 	Nodeinfo\Integration\Nodeinfo21::init();
+	Nodeinfo\Integration\Nodeinfo22::init();
 
 	// Register REST routes.
 	add_action( 'rest_api_init', 'nodeinfo_register_routes' );
