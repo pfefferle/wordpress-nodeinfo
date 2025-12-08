@@ -3,10 +3,10 @@
 - Contributors: pfefferle
 - Donate link: https://notiz.blog/donate/
 - Tags: nodeinfo, fediverse, ostatus, diaspora, activitypub
-- Requires at least: 4.9
+- Requires at least: 6.6
 - Tested up to: 6.9
-- Stable tag: 2.3.1
-- Requires PHP: 5.6
+- Stable tag: 3.0.0
+- Requires PHP: 7.2
 - License: MIT
 - License URI: https://opensource.org/licenses/MIT
 
@@ -23,6 +23,16 @@ This plugin provides a barebone JSON file with basic "node"-informations. The fi
 ## Changelog
 
 Project and support maintained on github at [pfefferle/wordpress-nodeinfo](https://github.com/pfefferle/wordpress-nodeinfo).
+
+### 3.0.0
+
+* Refactored to filter-based architecture for better extensibility
+* Added support for NodeInfo 2.2
+* Added separate integration classes for each NodeInfo version (1.0, 1.1, 2.0, 2.1, 2.2)
+* Added PSR-4 style autoloader
+* Updated schemas to match official NodeInfo specifications with enums and constraints
+* Added `nodeinfo_protocols` filter for plugins to register protocols
+* Added `software.homepage` field for NodeInfo 2.1 and 2.2
 
 ### 2.3.1
 
