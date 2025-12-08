@@ -55,7 +55,7 @@ class Nodeinfo2 extends \WP_REST_Controller {
 	 * Retrieves NodeInfo2 data.
 	 *
 	 * @param \WP_REST_Request $request The request object.
-	 * @return WP_REST_Response The response object.
+	 * @return \WP_REST_Response The response object.
 	 */
 	public function get_item( $request ) {
 		$version = $request->get_param( 'version' );
