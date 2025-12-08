@@ -87,10 +87,9 @@ class Nodeinfo extends WP_REST_Controller {
 	/**
 	 * Retrieves the discovery document.
 	 *
-	 * @param \WP_REST_Request $request The request object.
 	 * @return WP_REST_Response The response object.
 	 */
-	public function get_discovery( $request ) {
+	public function get_discovery() {
 		$links = array();
 
 		/**

@@ -36,7 +36,7 @@ class Nodeinfo2 extends WP_REST_Controller {
 			$this->namespace,
 			'/(?P<version>\d\.\d)',
 			array(
-				'args' => array(
+				'args'   => array(
 					'version' => array(
 						'description' => __( 'The NodeInfo2 schema version.', 'nodeinfo' ),
 						'type'        => 'string',

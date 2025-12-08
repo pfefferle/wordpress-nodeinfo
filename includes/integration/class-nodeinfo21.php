@@ -151,6 +151,7 @@ class Nodeinfo21 {
 			return $software;
 		}
 
+		// phpcs:ignore WordPress.WP.CapitalPDangit.MisspelledInText -- NodeInfo spec uses lowercase.
 		$software['name']       = 'wordpress';
 		$software['version']    = get_masked_version();
 		$software['repository'] = 'https://github.com/wordpress/wordpress';
