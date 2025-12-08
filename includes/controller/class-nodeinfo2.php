@@ -63,6 +63,7 @@ class Nodeinfo2 extends \WP_REST_Controller {
 		$users = \get_users(
 			array(
 				'capability__in' => array( 'publish_posts' ),
+				'fields'         => 'ID',
 			)
 		);
 

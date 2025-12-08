@@ -92,7 +92,7 @@ class Test_Nodeinfo_Endpoint extends \WP_UnitTestCase {
 		$response = $this->server->dispatch( $request );
 		$data     = $response->get_data();
 
-		$versions = array( '1.0', '1.1', '2.0', '2.1' );
+		$versions = array( '1.0', '1.1', '2.0', '2.1', '2.2' );
 		$links    = $data['links'];
 
 		foreach ( $versions as $version ) {
