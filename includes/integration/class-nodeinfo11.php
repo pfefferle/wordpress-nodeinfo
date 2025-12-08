@@ -63,11 +63,13 @@ class Nodeinfo11 {
 	/**
 	 * Adds the schema for NodeInfo 1.1.
 	 *
+	 * @link https://github.com/jhass/nodeinfo/blob/main/schemas/1.1/schema.json
+	 *
 	 * @param array $schema The schema.
 	 * @return array The modified schema.
 	 */
 	public static function schema( $schema ) {
-		// NodeInfo 1.1 schema - same as 1.0, protocols uses inbound/outbound structure.
+		// NodeInfo 1.1 schema - adds hubzilla to software enum and zot to protocols.
 		$schema['properties'] = array_merge(
 			$schema['properties'],
 			array(
@@ -79,7 +81,10 @@ class Nodeinfo11 {
 					'description' => 'Metadata about server software in use.',
 					'type'        => 'object',
 					'properties'  => array(
-						'name'    => array( 'type' => 'string' ),
+						'name'    => array(
+							'type' => 'string',
+							'enum' => array( 'diaspora', 'friendica', 'hubzilla', 'redmatrix' ),
+						),
 						'version' => array( 'type' => 'string' ),
 					),
 				),
@@ -89,11 +94,17 @@ class Nodeinfo11 {
 					'properties'  => array(
 						'inbound'  => array(
 							'type'  => 'array',
-							'items' => array( 'type' => 'string' ),
+							'items' => array(
+								'type' => 'string',
+								'enum' => array( 'buddycloud', 'diaspora', 'friendica', 'gnusocial', 'libertree', 'mediagoblin', 'pumpio', 'redmatrix', 'smtp', 'tent', 'zot' ),
+							),
 						),
 						'outbound' => array(
 							'type'  => 'array',
-							'items' => array( 'type' => 'string' ),
+							'items' => array(
+								'type' => 'string',
+								'enum' => array( 'buddycloud', 'diaspora', 'friendica', 'gnusocial', 'libertree', 'mediagoblin', 'pumpio', 'redmatrix', 'smtp', 'tent', 'zot' ),
+							),
 						),
 					),
 				),
@@ -103,11 +114,17 @@ class Nodeinfo11 {
 					'properties'  => array(
 						'inbound'  => array(
 							'type'  => 'array',
-							'items' => array( 'type' => 'string' ),
+							'items' => array(
+								'type' => 'string',
+								'enum' => array( 'appnet', 'gnusocial', 'pumpio' ),
+							),
 						),
 						'outbound' => array(
 							'type'  => 'array',
-							'items' => array( 'type' => 'string' ),
+							'items' => array(
+								'type' => 'string',
+								'enum' => array( 'appnet', 'blogger', 'buddycloud', 'diaspora', 'dreamwidth', 'drupal', 'facebook', 'friendica', 'gnusocial', 'google', 'insanejournal', 'libertree', 'linkedin', 'livejournal', 'mediagoblin', 'myspace', 'pinterest', 'posterous', 'pumpio', 'redmatrix', 'smtp', 'tent', 'tumblr', 'twitter', 'wordpress', 'xmpp' ),
+							),
 						),
 					),
 				),
@@ -122,13 +139,28 @@ class Nodeinfo11 {
 						'users'         => array(
 							'type'       => 'object',
 							'properties' => array(
-								'total'          => array( 'type' => 'integer' ),
-								'activeMonth'    => array( 'type' => 'integer' ),
-								'activeHalfyear' => array( 'type' => 'integer' ),
+								'total'          => array(
+									'type'    => 'integer',
+									'minimum' => 0,
+								),
+								'activeMonth'    => array(
+									'type'    => 'integer',
+									'minimum' => 0,
+								),
+								'activeHalfyear' => array(
+									'type'    => 'integer',
+									'minimum' => 0,
+								),
 							),
 						),
-						'localPosts'    => array( 'type' => 'integer' ),
-						'localComments' => array( 'type' => 'integer' ),
+						'localPosts'    => array(
+							'type'    => 'integer',
+							'minimum' => 0,
+						),
+						'localComments' => array(
+							'type'    => 'integer',
+							'minimum' => 0,
+						),
 					),
 				),
 				'metadata'          => array(

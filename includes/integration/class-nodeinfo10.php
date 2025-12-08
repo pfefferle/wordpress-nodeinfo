@@ -63,6 +63,8 @@ class Nodeinfo10 {
 	/**
 	 * Adds the schema for this version.
 	 *
+	 * @link https://github.com/jhass/nodeinfo/blob/main/schemas/1.0/schema.json
+	 *
 	 * @param array $schema The schema.
 	 * @return array The modified schema.
 	 */
@@ -78,7 +80,10 @@ class Nodeinfo10 {
 					'description' => 'Metadata about server software in use.',
 					'type'        => 'object',
 					'properties'  => array(
-						'name'    => array( 'type' => 'string' ),
+						'name'    => array(
+							'type' => 'string',
+							'enum' => array( 'diaspora', 'friendica', 'redmatrix' ),
+						),
 						'version' => array( 'type' => 'string' ),
 					),
 				),
@@ -88,11 +93,17 @@ class Nodeinfo10 {
 					'properties'  => array(
 						'inbound'  => array(
 							'type'  => 'array',
-							'items' => array( 'type' => 'string' ),
+							'items' => array(
+								'type' => 'string',
+								'enum' => array( 'buddycloud', 'diaspora', 'friendica', 'gnusocial', 'libertree', 'mediagoblin', 'pumpio', 'redmatrix', 'smtp', 'tent' ),
+							),
 						),
 						'outbound' => array(
 							'type'  => 'array',
-							'items' => array( 'type' => 'string' ),
+							'items' => array(
+								'type' => 'string',
+								'enum' => array( 'buddycloud', 'diaspora', 'friendica', 'gnusocial', 'libertree', 'mediagoblin', 'pumpio', 'redmatrix', 'smtp', 'tent' ),
+							),
 						),
 					),
 				),
@@ -102,11 +113,17 @@ class Nodeinfo10 {
 					'properties'  => array(
 						'inbound'  => array(
 							'type'  => 'array',
-							'items' => array( 'type' => 'string' ),
+							'items' => array(
+								'type' => 'string',
+								'enum' => array( 'appnet', 'gnusocial', 'pumpio' ),
+							),
 						),
 						'outbound' => array(
 							'type'  => 'array',
-							'items' => array( 'type' => 'string' ),
+							'items' => array(
+								'type' => 'string',
+								'enum' => array( 'appnet', 'blogger', 'buddycloud', 'diaspora', 'dreamwidth', 'drupal', 'facebook', 'friendica', 'gnusocial', 'google', 'insanejournal', 'libertree', 'linkedin', 'livejournal', 'mediagoblin', 'myspace', 'pinterest', 'posterous', 'pumpio', 'redmatrix', 'smtp', 'tent', 'tumblr', 'twitter', 'wordpress', 'xmpp' ),
+							),
 						),
 					),
 				),
@@ -121,13 +138,28 @@ class Nodeinfo10 {
 						'users'         => array(
 							'type'       => 'object',
 							'properties' => array(
-								'total'          => array( 'type' => 'integer' ),
-								'activeMonth'    => array( 'type' => 'integer' ),
-								'activeHalfyear' => array( 'type' => 'integer' ),
+								'total'          => array(
+									'type'    => 'integer',
+									'minimum' => 0,
+								),
+								'activeMonth'    => array(
+									'type'    => 'integer',
+									'minimum' => 0,
+								),
+								'activeHalfyear' => array(
+									'type'    => 'integer',
+									'minimum' => 0,
+								),
 							),
 						),
-						'localPosts'    => array( 'type' => 'integer' ),
-						'localComments' => array( 'type' => 'integer' ),
+						'localPosts'    => array(
+							'type'    => 'integer',
+							'minimum' => 0,
+						),
+						'localComments' => array(
+							'type'    => 'integer',
+							'minimum' => 0,
+						),
 					),
 				),
 				'metadata'          => array(

@@ -29,6 +29,7 @@ class Nodeinfo20 {
 		add_filter( 'nodeinfo_discovery_links', array( __CLASS__, 'discovery_link' ) );
 		add_filter( 'nodeinfo_schema', array( __CLASS__, 'schema' ) );
 		add_filter( 'nodeinfo_data_software', array( __CLASS__, 'software' ), 10, 2 );
+		add_filter( 'nodeinfo_data_protocols', array( __CLASS__, 'protocols' ), 10, 2 );
 		add_filter( 'nodeinfo_data_services', array( __CLASS__, 'services' ), 10, 2 );
 		add_filter( 'nodeinfo_data_usage', array( __CLASS__, 'usage' ), 10, 2 );
 		add_filter( 'nodeinfo_data_metadata', array( __CLASS__, 'metadata' ), 10, 2 );
@@ -62,11 +63,13 @@ class Nodeinfo20 {
 	/**
 	 * Adds the schema for NodeInfo 2.0.
 	 *
+	 * @link https://github.com/jhass/nodeinfo/blob/main/schemas/2.0/schema.json
+	 *
 	 * @param array $schema The schema.
 	 * @return array The modified schema.
 	 */
 	public static function schema( $schema ) {
-		// NodeInfo 2.0 schema - protocols is a flat array, not inbound/outbound.
+		// NodeInfo 2.0 schema - protocols is a flat array, software name is pattern-based.
 		$schema['properties'] = array_merge(
 			$schema['properties'],
 			array(
@@ -78,14 +81,21 @@ class Nodeinfo20 {
 					'description' => 'Metadata about server software in use.',
 					'type'        => 'object',
 					'properties'  => array(
-						'name'    => array( 'type' => 'string' ),
+						'name'    => array(
+							'type'    => 'string',
+							'pattern' => '^[a-z0-9-]+$',
+						),
 						'version' => array( 'type' => 'string' ),
 					),
 				),
 				'protocols'         => array(
 					'description' => 'The protocols supported on this server.',
 					'type'        => 'array',
-					'items'       => array( 'type' => 'string' ),
+					'minItems'    => 1,
+					'items'       => array(
+						'type' => 'string',
+						'enum' => array( 'activitypub', 'buddycloud', 'dfrn', 'diaspora', 'libertree', 'ostatus', 'pumpio', 'tent', 'xmpp', 'zot' ),
+					),
 				),
 				'services'          => array(
 					'description' => 'Third party sites this server can connect to.',
@@ -93,11 +103,17 @@ class Nodeinfo20 {
 					'properties'  => array(
 						'inbound'  => array(
 							'type'  => 'array',
-							'items' => array( 'type' => 'string' ),
+							'items' => array(
+								'type' => 'string',
+								'enum' => array( 'atom1.0', 'gnusocial', 'imap', 'pnut', 'pop3', 'pumpio', 'rss2.0', 'twitter' ),
+							),
 						),
 						'outbound' => array(
 							'type'  => 'array',
-							'items' => array( 'type' => 'string' ),
+							'items' => array(
+								'type' => 'string',
+								'enum' => array( 'atom1.0', 'blogger', 'buddycloud', 'diaspora', 'dreamwidth', 'drupal', 'facebook', 'friendica', 'gnusocial', 'google', 'insanejournal', 'libertree', 'linkedin', 'livejournal', 'mediagoblin', 'myspace', 'pinterest', 'pnut', 'posterous', 'pumpio', 'redmatrix', 'rss2.0', 'smtp', 'tent', 'tumblr', 'twitter', 'wordpress', 'xmpp' ),
+							),
 						),
 					),
 				),
@@ -112,13 +128,28 @@ class Nodeinfo20 {
 						'users'         => array(
 							'type'       => 'object',
 							'properties' => array(
-								'total'          => array( 'type' => 'integer' ),
-								'activeMonth'    => array( 'type' => 'integer' ),
-								'activeHalfyear' => array( 'type' => 'integer' ),
+								'total'          => array(
+									'type'    => 'integer',
+									'minimum' => 0,
+								),
+								'activeMonth'    => array(
+									'type'    => 'integer',
+									'minimum' => 0,
+								),
+								'activeHalfyear' => array(
+									'type'    => 'integer',
+									'minimum' => 0,
+								),
 							),
 						),
-						'localPosts'    => array( 'type' => 'integer' ),
-						'localComments' => array( 'type' => 'integer' ),
+						'localPosts'    => array(
+							'type'    => 'integer',
+							'minimum' => 0,
+						),
+						'localComments' => array(
+							'type'    => 'integer',
+							'minimum' => 0,
+						),
 					),
 				),
 				'metadata'          => array(
@@ -148,6 +179,24 @@ class Nodeinfo20 {
 		$software['version'] = get_masked_version();
 
 		return $software;
+	}
+
+	/**
+	 * Adds protocols.
+	 *
+	 * NodeInfo 2.0+ uses a flat array of protocol strings.
+	 *
+	 * @param array  $protocols The protocols data.
+	 * @param string $version   The NodeInfo version.
+	 * @return array The modified protocols data.
+	 */
+	public static function protocols( $protocols, $version ) {
+		if ( self::VERSION !== $version ) {
+			return $protocols;
+		}
+
+		// Default protocols - can be extended via filter.
+		return apply_filters( 'nodeinfo_protocols', array() );
 	}
 
 	/**
