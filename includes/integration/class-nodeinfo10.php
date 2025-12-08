@@ -27,7 +27,6 @@ class Nodeinfo10 {
 	public static function init() {
 		add_filter( 'nodeinfo_versions', array( __CLASS__, 'register_version' ) );
 		add_filter( 'nodeinfo_discovery_links', array( __CLASS__, 'discovery_link' ) );
-		add_filter( 'nodeinfo_jrd_links', array( __CLASS__, 'jrd_link' ) );
 		add_filter( 'nodeinfo_schema', array( __CLASS__, 'schema' ) );
 		add_filter( 'nodeinfo_data_software', array( __CLASS__, 'software' ), 10, 2 );
 		add_filter( 'nodeinfo_data_protocols', array( __CLASS__, 'protocols' ), 10, 2 );
@@ -54,20 +53,6 @@ class Nodeinfo10 {
 	 * @return array The modified links.
 	 */
 	public static function discovery_link( $links ) {
-		$links[] = array(
-			'rel'  => 'http://nodeinfo.diaspora.software/ns/schema/' . self::VERSION,
-			'href' => get_rest_url( null, '/nodeinfo/' . self::VERSION ),
-		);
-		return $links;
-	}
-
-	/**
-	 * Adds the JRD link.
-	 *
-	 * @param array $links The JRD links.
-	 * @return array The modified links.
-	 */
-	public static function jrd_link( $links ) {
 		$links[] = array(
 			'rel'  => 'http://nodeinfo.diaspora.software/ns/schema/' . self::VERSION,
 			'href' => get_rest_url( null, '/nodeinfo/' . self::VERSION ),

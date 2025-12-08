@@ -153,27 +153,6 @@ class Nodeinfo extends WP_REST_Controller {
 	}
 
 	/**
-	 * Adds Host-Meta and WebFinger discovery links.
-	 *
-	 * @param array $jrd The JRD document.
-	 * @return array The modified JRD document.
-	 */
-	public static function jrd( $jrd ) {
-		/**
-		 * Filters the NodeInfo JRD links for WebFinger/Host-Meta.
-		 *
-		 * @param array $links The JRD links.
-		 */
-		$links = apply_filters( 'nodeinfo_jrd_links', array() );
-
-		foreach ( $links as $link ) {
-			$jrd['links'][] = $link;
-		}
-
-		return $jrd;
-	}
-
-	/**
 	 * Retrieves the NodeInfo schema.
 	 *
 	 * @return array The schema data.
@@ -192,5 +171,31 @@ class Nodeinfo extends WP_REST_Controller {
 		 * @param array $schema The schema data.
 		 */
 		return apply_filters( 'nodeinfo_schema', $schema );
+	}
+
+	/**
+	 * Adds NodeInfo discovery links to JRD documents.
+	 *
+	 * Translates the nodeinfo_discovery_links filter to JRD format
+	 * for WebFinger and Host-Meta discovery.
+	 *
+	 * @param array $jrd The JRD document.
+	 * @return array The modified JRD document.
+	 */
+	public static function jrd( $jrd ) {
+		if ( ! isset( $jrd['links'] ) ) {
+			$jrd['links'] = array();
+		}
+
+		/**
+		 * Filters the NodeInfo discovery links.
+		 *
+		 * @param array $links The discovery links.
+		 */
+		$links = apply_filters( 'nodeinfo_discovery_links', array() );
+
+		$jrd['links'] = array_merge( $jrd['links'], $links );
+
+		return $jrd;
 	}
 }
