@@ -39,6 +39,9 @@ function nodeinfo_init() {
 	Nodeinfo\Integration\Nodeinfo21::init();
 	Nodeinfo\Integration\Nodeinfo22::init();
 
+	// Initialize Site Health checks.
+	Nodeinfo\Health_Check::init();
+
 	// Register REST routes.
 	add_action( 'rest_api_init', 'nodeinfo_register_routes' );
 

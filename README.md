@@ -68,6 +68,15 @@ Visit `https://yoursite.com/.well-known/nodeinfo` in your browser. You should se
 
 Yes! This plugin is designed to be extensible. Other plugins can use WordPress filters to add their own protocols, services, or metadata. For example, the ActivityPub plugin automatically adds `activitypub` to the supported protocols list.
 
+### How do I know if everything is configured correctly?
+
+Go to **Tools > Site Health** in your WordPress admin. The plugin adds two health checks:
+
+* **NodeInfo Well-Known Endpoint** - Verifies that `/.well-known/nodeinfo` is accessible
+* **NodeInfo REST Endpoint** - Verifies that the NodeInfo 2.2 REST endpoint returns valid data
+
+If either check fails, you'll see recommendations on how to fix the issue.
+
 ## Changelog
 
 Project and support maintained on github at [pfefferle/wordpress-nodeinfo](https://github.com/pfefferle/wordpress-nodeinfo).
@@ -81,6 +90,7 @@ Project and support maintained on github at [pfefferle/wordpress-nodeinfo](https
 * Updated schemas to match official NodeInfo specifications with enums and constraints
 * Added `nodeinfo_protocols` filter for plugins to register protocols
 * Added `software.homepage` field for NodeInfo 2.1 and 2.2
+* Added Site Health checks to verify endpoints are accessible
 
 ### 2.3.1
 
