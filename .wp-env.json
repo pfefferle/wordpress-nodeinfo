@@ -1,0 +1,19 @@
+{
+	"core": null,
+	"plugins": [ "." ],
+	"port": 8889,
+	"testsPort": 8890,
+	"env": {
+		"tests": {
+			"config": {
+				"WP_ENVIRONMENT_TYPE": "production"
+			},
+			"mappings": {
+				"wp-content/plugins/nodeinfo": "."
+			}
+		}
+	},
+	"lifecycleScripts": {
+		"afterStart": "npx wp-env run cli wp rewrite structure /%year%/%monthnum%/%postname%/"
+	}
+}

@@ -1,41 +1,49 @@
 {
-  "name": "pfefferle/wordpress-nodeinfo",
-  "description": "NodeInfo and NodeInfo2 for WordPress!",
-  "require": {
-    "php": ">=5.6.0",
-    "composer/installers": "^1.0 || ^2.0"
-  },
-  "type": "wordpress-plugin",
-  "license": "MIT",
-  "authors": [
-    {
-      "name": "Matthias Pfefferle",
-      "homepage": "https://notiz.blog"
-    }
-  ],
-  "extra": {
-    "installer-name": "nodeinfo"
-  },
-  "require-dev": {
-    "phpunit/phpunit": "^5.7.21 || ^6.5 || ^7.5 || ^8",
-    "phpcompatibility/php-compatibility": "*",
-    "phpcompatibility/phpcompatibility-wp": "*",
-    "squizlabs/php_codesniffer": "3.*",
-    "wp-coding-standards/wpcs": "*",
-    "yoast/phpunit-polyfills": "^3.0",
-    "dealerdirect/phpcodesniffer-composer-installer": "^1.0.0"
-  },
-  "config": {
-    "allow-plugins": true
-  },
-  "allow-plugins": {
-    "composer/installers": true
-  },
-  "scripts": {
-    "test": [
-      "composer install",
-      "bin/install-wp-tests.sh wordpress wordpress wordpress",
-      "vendor/bin/phpunit"
-    ]
-  }
+	"name": "pfefferle/wordpress-nodeinfo",
+	"description": "NodeInfo and NodeInfo2 for WordPress!",
+	"type": "wordpress-plugin",
+	"license": "MIT",
+	"authors": [
+		{
+			"name": "Matthias Pfefferle",
+			"homepage": "https://notiz.blog"
+		}
+	],
+	"require": {
+		"php": ">=7.2",
+		"composer/installers": "^1.0 || ^2.0"
+	},
+	"require-dev": {
+		"phpunit/phpunit": "^8 || ^9",
+		"phpcompatibility/php-compatibility": "*",
+		"phpcompatibility/phpcompatibility-wp": "*",
+		"squizlabs/php_codesniffer": "3.*",
+		"wp-coding-standards/wpcs": "dev-develop",
+		"yoast/phpunit-polyfills": "^4.0",
+		"dealerdirect/phpcodesniffer-composer-installer": "^1.0.0",
+		"sirbrillig/phpcs-variable-analysis": "^2.11",
+		"phpcsstandards/phpcsextra": "^1.1.0"
+	},
+	"extra": {
+		"installer-name": "nodeinfo"
+	},
+	"config": {
+		"allow-plugins": true
+	},
+	"scripts": {
+		"test": [
+			"composer install",
+			"bin/install-wp-tests.sh nodeinfo-test root nodeinfo-test test-db latest true",
+			"vendor/bin/phpunit"
+		],
+		"test:wp-env": [
+			"wp-env run tests-cli --env-cwd=\"wp-content/plugins/nodeinfo\" vendor/bin/phpunit"
+		],
+		"lint": [
+			"vendor/bin/phpcs"
+		],
+		"lint:fix": [
+			"vendor/bin/phpcbf"
+		]
+	}
 }
