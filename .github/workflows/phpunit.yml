@@ -25,7 +25,7 @@ jobs:
         image: mariadb:10.4
         env:
           MARIADB_ROOT_PASSWORD: root
-          MARIADB_DATABASE: wordpress_test
+          MARIADB_ALLOW_EMPTY_ROOT_PASSWORD: true
         ports:
           - 3306:3306
         options: >-
@@ -63,7 +63,7 @@ jobs:
         uses: ramsey/composer-install@v3
 
       - name: Setup Test Environment
-        run: bash bin/install-wp-tests.sh wordpress_test root root 127.0.0.1 ${{ matrix.wp-version }} true
+        run: bash bin/install-wp-tests.sh wordpress_test root root 127.0.0.1 ${{ matrix.wp-version }}
 
       - name: Run PHPUnit
         run: vendor/bin/phpunit
