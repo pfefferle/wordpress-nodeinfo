@@ -1,17 +1,16 @@
 {
-  "name": "nodeinfo",
-  "version": "1.0.0",
-  "description": "NodeInfo is an effort to create a standardized way of exposing metadata about a server running one of the distributed social networks. ",
+  "name": "wordpress-nodeinfo",
+  "description": "NodeInfo and NodeInfo2 for WordPress!",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/pfefferle/wordpress-nodeinfo.git"
   },
   "keywords": [
+    "wordpress",
     "nodeinfo",
     "fediverse",
-    "ostatus",
-    "diaspora",
-    "activitypub"
+    "activitypub",
+    "diaspora"
   ],
   "author": "Matthias Pfefferle",
   "license": "MIT",
@@ -19,9 +18,18 @@
     "url": "https://github.com/pfefferle/wordpress-nodeinfo/issues"
   },
   "homepage": "https://github.com/pfefferle/wordpress-nodeinfo#readme",
+  "engines": {
+    "node": ">=18"
+  },
   "devDependencies": {
-    "grunt": "^1.6.1",
-    "grunt-wp-i18n": "^1.0.3",
-    "grunt-wp-readme-to-markdown": "^2.1.0"
+    "@wordpress/env": "^10.0.0"
+  },
+  "scripts": {
+    "wp-env": "wp-env",
+    "start": "wp-env start",
+    "stop": "wp-env stop",
+    "test:php": "wp-env run tests-cli --env-cwd=wp-content/plugins/nodeinfo vendor/bin/phpunit",
+    "lint:php": "composer lint",
+    "lint:php:fix": "composer lint:fix"
   }
 }

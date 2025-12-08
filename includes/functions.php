@@ -1,7 +1,20 @@
 <?php
-function nodeinfo_get_active_users( $duration = '1 month ago' ) {
-	// get all distinct authors that have published a post in the last 30 days
-	$posts = get_posts(
+/**
+ * Helper functions for NodeInfo.
+ *
+ * @package Nodeinfo
+ */
+
+namespace Nodeinfo;
+
+/**
+ * Gets the count of active users within a duration.
+ *
+ * @param string $duration The duration to check (e.g., '1 month ago').
+ * @return int The number of active users.
+ */
+function get_active_users( $duration = '1 month ago' ) {
+	$posts = \get_posts(
 		array(
 			'post_type'      => 'post',
 			'post_status'    => 'publish',
@@ -20,10 +33,9 @@ function nodeinfo_get_active_users( $duration = '1 month ago' ) {
 		return 0;
 	}
 
-	// get all distinct ID from $posts
-	return count(
-		array_unique(
-			wp_list_pluck(
+	return \count(
+		\array_unique(
+			\wp_list_pluck(
 				$posts,
 				'post_author'
 			)
@@ -32,17 +44,16 @@ function nodeinfo_get_active_users( $duration = '1 month ago' ) {
 }
 
 /**
- * Get the masked WordPress version to only show the major and minor version.
+ * Gets the masked WordPress version (major.minor only).
  *
  * @return string The masked version.
  */
-function nodeinfo_get_masked_version() {
-	// only show the major and minor version
-	$version = get_bloginfo( 'version' );
-	// strip the RC or beta part
-	$version = preg_replace( '/-.*$/', '', $version );
-	$version = explode( '.', $version );
-	$version = array_slice( $version, 0, 2 );
+function get_masked_version() {
+	$version = \get_bloginfo( 'version' );
+	// Strip RC/beta suffixes.
+	$version = \preg_replace( '/-.*$/', '', $version );
+	$version = \explode( '.', $version );
+	$version = \array_slice( $version, 0, 2 );
 
-	return implode( '.', $version );
+	return \implode( '.', $version );
 }

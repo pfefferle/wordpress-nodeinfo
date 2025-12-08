@@ -3,10 +3,10 @@
 - Contributors: pfefferle
 - Donate link: https://notiz.blog/donate/
 - Tags: nodeinfo, fediverse, ostatus, diaspora, activitypub
-- Requires at least: 4.9
+- Requires at least: 6.6
 - Tested up to: 6.9
-- Stable tag: 2.3.1
-- Requires PHP: 5.6
+- Stable tag: 3.0.0
+- Requires PHP: 7.2
 - License: MIT
 - License URI: https://opensource.org/licenses/MIT
 
@@ -18,11 +18,79 @@ NodeInfo and NodeInfo2 for WordPress!
 
 This plugin provides a barebone JSON file with basic "node"-informations. The file can be extended by other WordPress plugins, like [OStatus](https://wordpress.org/plugins/ostatus-for-wordpress/), [Diaspora](https://github.com/pfefferle/wordpress-dandelion) or [ActivityPub](https://wordpress.org/plugins/activitypub/)/[Pterotype](https://wordpress.org/plugins/pterotype/).
 
+### What information does this plugin share?
+
+The plugin exposes the following public information about your site:
+
+* **Software**: WordPress version (major version only for privacy)
+* **Usage statistics**: Number of users, posts, and comments
+* **Site info**: Your site name and description
+* **Protocols**: Which federation protocols your site supports (e.g., ActivityPub)
+* **Services**: Which external services your site can connect to (e.g., RSS feeds)
+
+This information helps other servers in the Fediverse discover and interact with your site.
+
+### Supported NodeInfo versions
+
+This plugin supports all major NodeInfo specification versions:
+
+* **NodeInfo 1.0** and **1.1** - Original specifications
+* **NodeInfo 2.0**, **2.1**, and **2.2** - Current specifications with extended metadata
+* **NodeInfo2** - Alternative single-endpoint format
+
+### Endpoints
+
+After activation, the following endpoints become available:
+
+* `/.well-known/nodeinfo` - Discovery document (start here)
+* `/wp-json/nodeinfo/2.2` - NodeInfo 2.2 (recommended)
+* `/wp-json/nodeinfo/2.1` - NodeInfo 2.1
+* `/wp-json/nodeinfo/2.0` - NodeInfo 2.0
+* `/wp-json/nodeinfo/1.1` - NodeInfo 1.1
+* `/wp-json/nodeinfo/1.0` - NodeInfo 1.0
+* `/.well-known/x-nodeinfo2` - NodeInfo2 format
+
 ## Frequently Asked Questions
+
+### Why do I need this plugin?
+
+If you want your WordPress site to be part of the Fediverse (decentralized social networks like Mastodon), this plugin helps other servers discover information about your site. It works together with plugins like [ActivityPub](https://wordpress.org/plugins/activitypub/) to make your site fully federated.
+
+### Is any private information shared?
+
+No. Only public information about your site is shared, such as your site name, description, and post counts. No personal user data or private content is exposed.
+
+### How can I verify it's working?
+
+Visit `https://yoursite.com/.well-known/nodeinfo` in your browser. You should see a JSON document with links to the NodeInfo endpoints.
+
+### Can other plugins extend the NodeInfo data?
+
+Yes! This plugin is designed to be extensible. Other plugins can use WordPress filters to add their own protocols, services, or metadata. For example, the ActivityPub plugin automatically adds `activitypub` to the supported protocols list.
+
+### How do I know if everything is configured correctly?
+
+Go to **Tools > Site Health** in your WordPress admin. The plugin adds two health checks:
+
+* **NodeInfo Well-Known Endpoint** - Verifies that `/.well-known/nodeinfo` is accessible
+* **NodeInfo REST Endpoint** - Verifies that the NodeInfo 2.2 REST endpoint returns valid data
+
+If either check fails, you'll see recommendations on how to fix the issue.
 
 ## Changelog
 
 Project and support maintained on github at [pfefferle/wordpress-nodeinfo](https://github.com/pfefferle/wordpress-nodeinfo).
+
+### 3.0.0
+
+* Refactored to filter-based architecture for better extensibility
+* Added support for NodeInfo 2.2
+* Added separate integration classes for each NodeInfo version (1.0, 1.1, 2.0, 2.1, 2.2)
+* Added PSR-4 style autoloader
+* Updated schemas to match official NodeInfo specifications with enums and constraints
+* Added `nodeinfo_protocols` filter for plugins to register protocols
+* Added `software.homepage` field for NodeInfo 2.1 and 2.2
+* Added Site Health checks to verify endpoints are accessible
 
 ### 2.3.1
 
