@@ -28,6 +28,9 @@ Nodeinfo\Autoloader::register_path( 'Nodeinfo', NODEINFO_PLUGIN_DIR . 'includes'
 // Require global functions.
 require_once NODEINFO_PLUGIN_DIR . 'includes/functions.php';
 
+// Require deprecated classes for backwards compatibility.
+require_once NODEINFO_PLUGIN_DIR . 'includes/class-nodeinfo-endpoint.php';
+
 /**
  * Initialize the plugin.
  */
