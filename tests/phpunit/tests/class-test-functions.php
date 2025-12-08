@@ -28,36 +28,15 @@ class Test_Functions extends \WP_UnitTestCase {
 	}
 
 	/**
-	 * Test get_masked_version with masking enabled.
+	 * Test get_masked_version returns major.minor format.
 	 *
 	 * @covers \Nodeinfo\get_masked_version
 	 */
-	public function test_get_masked_version_with_masking() {
-		add_filter( 'nodeinfo_mask_version', '__return_true' );
+	public function test_get_masked_version_format() {
+		$version = get_masked_version();
 
-		$version    = get_masked_version();
-		$wp_version = get_bloginfo( 'version' );
-
-		// When masked, should only show major.minor.
-		$this->assertNotEquals( $wp_version, $version );
-
-		remove_filter( 'nodeinfo_mask_version', '__return_true' );
-	}
-
-	/**
-	 * Test get_masked_version without masking.
-	 *
-	 * @covers \Nodeinfo\get_masked_version
-	 */
-	public function test_get_masked_version_without_masking() {
-		add_filter( 'nodeinfo_mask_version', '__return_false' );
-
-		$version    = get_masked_version();
-		$wp_version = get_bloginfo( 'version' );
-
-		$this->assertEquals( $wp_version, $version );
-
-		remove_filter( 'nodeinfo_mask_version', '__return_false' );
+		// Should match major.minor format (e.g., "6.5").
+		$this->assertMatchesRegularExpression( '/^\d+\.\d+$/', $version );
 	}
 
 	/**

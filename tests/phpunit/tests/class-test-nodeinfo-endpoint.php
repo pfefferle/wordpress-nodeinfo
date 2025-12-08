@@ -171,7 +171,8 @@ class Test_Nodeinfo_Endpoint extends \WP_UnitTestCase {
 		$request  = new \WP_REST_Request( 'GET', '/nodeinfo/9.9' );
 		$response = $this->server->dispatch( $request );
 
-		$this->assertEquals( 404, $response->get_status() );
+		// Returns 400 (bad request) because enum validation fails.
+		$this->assertEquals( 400, $response->get_status() );
 	}
 
 	/**

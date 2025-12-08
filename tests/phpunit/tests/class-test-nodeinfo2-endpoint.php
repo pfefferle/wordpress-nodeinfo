@@ -53,7 +53,7 @@ class Test_Nodeinfo2_Endpoint extends \WP_UnitTestCase {
 	public function test_nodeinfo2_endpoint_registered() {
 		$routes = $this->server->get_routes();
 
-		$this->assertArrayHasKey( '/nodeinfo2/1.0', $routes );
+		$this->assertArrayHasKey( '/nodeinfo2/(?P<version>\\d\\.\\d)', $routes );
 	}
 
 	/**
