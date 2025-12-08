@@ -14,7 +14,8 @@ use WP_REST_Response;
 /**
  * NodeInfo REST Controller class.
  *
- * Handles NodeInfo discovery and versioned endpoints (1.0, 1.1, 2.0, 2.1).
+ * Handles NodeInfo discovery and versioned endpoints.
+ * Versions are registered dynamically via filters.
  */
 class Nodeinfo extends WP_REST_Controller {
 
@@ -41,6 +42,12 @@ class Nodeinfo extends WP_REST_Controller {
 			)
 		);
 
+		$versions = $this->get_versions();
+
+		if ( empty( $versions ) ) {
+			return;
+		}
+
 		register_rest_route(
 			$this->namespace,
 			'/(?P<version>\d\.\d)',
@@ -49,7 +56,7 @@ class Nodeinfo extends WP_REST_Controller {
 					'version' => array(
 						'description' => __( 'The NodeInfo schema version.', 'nodeinfo' ),
 						'type'        => 'string',
-						'enum'        => array( '1.0', '1.1', '2.0', '2.1' ),
+						'enum'        => $versions,
 						'required'    => true,
 					),
 				),
@@ -64,32 +71,36 @@ class Nodeinfo extends WP_REST_Controller {
 	}
 
 	/**
+	 * Gets registered NodeInfo versions.
+	 *
+	 * @return array List of version strings.
+	 */
+	protected function get_versions() {
+		/**
+		 * Filters the list of supported NodeInfo versions.
+		 *
+		 * @param array $versions List of version strings (e.g., '2.0', '2.1').
+		 */
+		return apply_filters( 'nodeinfo_versions', array() );
+	}
+
+	/**
 	 * Retrieves the discovery document.
 	 *
 	 * @param \WP_REST_Request $request The request object.
 	 * @return WP_REST_Response The response object.
 	 */
 	public function get_discovery( $request ) {
-		$discovery = array(
-			'links' => array(
-				array(
-					'rel'  => 'http://nodeinfo.diaspora.software/ns/schema/2.1',
-					'href' => get_rest_url( null, '/nodeinfo/2.1' ),
-				),
-				array(
-					'rel'  => 'http://nodeinfo.diaspora.software/ns/schema/2.0',
-					'href' => get_rest_url( null, '/nodeinfo/2.0' ),
-				),
-				array(
-					'rel'  => 'http://nodeinfo.diaspora.software/ns/schema/1.1',
-					'href' => get_rest_url( null, '/nodeinfo/1.1' ),
-				),
-				array(
-					'rel'  => 'http://nodeinfo.diaspora.software/ns/schema/1.0',
-					'href' => get_rest_url( null, '/nodeinfo/1.0' ),
-				),
-			),
-		);
+		$links = array();
+
+		/**
+		 * Filters the NodeInfo discovery links.
+		 *
+		 * @param array $links The discovery links.
+		 */
+		$links = apply_filters( 'nodeinfo_discovery_links', $links );
+
+		$discovery = array( 'links' => $links );
 
 		/**
 		 * Filters the NodeInfo discovery document.
@@ -148,25 +159,16 @@ class Nodeinfo extends WP_REST_Controller {
 	 * @return array The modified JRD document.
 	 */
 	public static function jrd( $jrd ) {
-		$jrd['links'][] = array(
-			'rel'  => 'http://nodeinfo.diaspora.software/ns/schema/2.1',
-			'href' => get_rest_url( null, '/nodeinfo/2.1' ),
-		);
+		/**
+		 * Filters the NodeInfo JRD links for WebFinger/Host-Meta.
+		 *
+		 * @param array $links The JRD links.
+		 */
+		$links = apply_filters( 'nodeinfo_jrd_links', array() );
 
-		$jrd['links'][] = array(
-			'rel'  => 'http://nodeinfo.diaspora.software/ns/schema/2.0',
-			'href' => get_rest_url( null, '/nodeinfo/2.0' ),
-		);
-
-		$jrd['links'][] = array(
-			'rel'  => 'http://nodeinfo.diaspora.software/ns/schema/1.1',
-			'href' => get_rest_url( null, '/nodeinfo/1.1' ),
-		);
-
-		$jrd['links'][] = array(
-			'rel'  => 'http://nodeinfo.diaspora.software/ns/schema/1.0',
-			'href' => get_rest_url( null, '/nodeinfo/1.0' ),
-		);
+		foreach ( $links as $link ) {
+			$jrd['links'][] = $link;
+		}
 
 		return $jrd;
 	}
@@ -177,96 +179,18 @@ class Nodeinfo extends WP_REST_Controller {
 	 * @return array The schema data.
 	 */
 	public function get_item_schema() {
-		return array(
+		$schema = array(
 			'$schema'    => 'http://json-schema.org/draft-04/schema#',
 			'title'      => 'nodeinfo',
 			'type'       => 'object',
-			'properties' => array(
-				'version'           => array(
-					'description' => __( 'The NodeInfo schema version.', 'nodeinfo' ),
-					'type'        => 'string',
-					'enum'        => array( '1.0', '1.1', '2.0', '2.1' ),
-				),
-				'software'          => array(
-					'description' => __( 'Metadata about server software in use.', 'nodeinfo' ),
-					'type'        => 'object',
-					'properties'  => array(
-						'name'       => array(
-							'type' => 'string',
-						),
-						'version'    => array(
-							'type' => 'string',
-						),
-						'homepage'   => array(
-							'type'   => 'string',
-							'format' => 'uri',
-						),
-						'repository' => array(
-							'type'   => 'string',
-							'format' => 'uri',
-						),
-					),
-				),
-				'protocols'         => array(
-					'description' => __( 'The protocols supported on this server.', 'nodeinfo' ),
-					'type'        => 'array',
-					'items'       => array(
-						'type' => 'string',
-					),
-				),
-				'services'          => array(
-					'description' => __( 'Third party sites this server can connect to.', 'nodeinfo' ),
-					'type'        => 'object',
-					'properties'  => array(
-						'inbound'  => array(
-							'type'  => 'array',
-							'items' => array(
-								'type' => 'string',
-							),
-						),
-						'outbound' => array(
-							'type'  => 'array',
-							'items' => array(
-								'type' => 'string',
-							),
-						),
-					),
-				),
-				'openRegistrations' => array(
-					'description' => __( 'Whether this server allows open self-registration.', 'nodeinfo' ),
-					'type'        => 'boolean',
-				),
-				'usage'             => array(
-					'description' => __( 'Usage statistics for this server.', 'nodeinfo' ),
-					'type'        => 'object',
-					'properties'  => array(
-						'users'         => array(
-							'type'       => 'object',
-							'properties' => array(
-								'total'          => array(
-									'type' => 'integer',
-								),
-								'activeMonth'    => array(
-									'type' => 'integer',
-								),
-								'activeHalfyear' => array(
-									'type' => 'integer',
-								),
-							),
-						),
-						'localPosts'    => array(
-							'type' => 'integer',
-						),
-						'localComments' => array(
-							'type' => 'integer',
-						),
-					),
-				),
-				'metadata'          => array(
-					'description' => __( 'Free form key value pairs for software specific values.', 'nodeinfo' ),
-					'type'        => 'object',
-				),
-			),
+			'properties' => array(),
 		);
+
+		/**
+		 * Filters the NodeInfo schema.
+		 *
+		 * @param array $schema The schema data.
+		 */
+		return apply_filters( 'nodeinfo_schema', $schema );
 	}
 }

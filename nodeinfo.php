@@ -30,8 +30,11 @@ require_once NODEINFO_PLUGIN_DIR . 'includes/functions.php';
  * Initialize the plugin.
  */
 function nodeinfo_init() {
-	// Initialize integrations.
-	Nodeinfo\Integration\Nodeinfo::init();
+	// Initialize NodeInfo version integrations.
+	Nodeinfo\Integration\Nodeinfo10::init();
+	Nodeinfo\Integration\Nodeinfo11::init();
+	Nodeinfo\Integration\Nodeinfo20::init();
+	Nodeinfo\Integration\Nodeinfo21::init();
 
 	// Register REST routes.
 	add_action( 'rest_api_init', 'nodeinfo_register_routes' );
