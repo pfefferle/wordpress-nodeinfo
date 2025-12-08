@@ -25,14 +25,14 @@ class Nodeinfo21 {
 	 * Initialize the integration.
 	 */
 	public static function init() {
-		add_filter( 'nodeinfo_versions', array( __CLASS__, 'register_version' ) );
-		add_filter( 'nodeinfo_discovery_links', array( __CLASS__, 'discovery_link' ) );
-		add_filter( 'nodeinfo_schema', array( __CLASS__, 'schema' ) );
-		add_filter( 'nodeinfo_data_software', array( __CLASS__, 'software' ), 10, 2 );
-		add_filter( 'nodeinfo_data_protocols', array( __CLASS__, 'protocols' ), 10, 2 );
-		add_filter( 'nodeinfo_data_services', array( __CLASS__, 'services' ), 10, 2 );
-		add_filter( 'nodeinfo_data_usage', array( __CLASS__, 'usage' ), 10, 2 );
-		add_filter( 'nodeinfo_data_metadata', array( __CLASS__, 'metadata' ), 10, 2 );
+		\add_filter( 'nodeinfo_versions', array( __CLASS__, 'register_version' ) );
+		\add_filter( 'nodeinfo_discovery_links', array( __CLASS__, 'discovery_link' ) );
+		\add_filter( 'nodeinfo_schema', array( __CLASS__, 'schema' ) );
+		\add_filter( 'nodeinfo_data_software', array( __CLASS__, 'software' ), 10, 2 );
+		\add_filter( 'nodeinfo_data_protocols', array( __CLASS__, 'protocols' ), 10, 2 );
+		\add_filter( 'nodeinfo_data_services', array( __CLASS__, 'services' ), 10, 2 );
+		\add_filter( 'nodeinfo_data_usage', array( __CLASS__, 'usage' ), 10, 2 );
+		\add_filter( 'nodeinfo_data_metadata', array( __CLASS__, 'metadata' ), 10, 2 );
 	}
 
 	/**
@@ -55,7 +55,7 @@ class Nodeinfo21 {
 	public static function discovery_link( $links ) {
 		$links[] = array(
 			'rel'  => 'http://nodeinfo.diaspora.software/ns/schema/' . self::VERSION,
-			'href' => get_rest_url( null, '/nodeinfo/' . self::VERSION ),
+			'href' => \get_rest_url( null, '/nodeinfo/' . self::VERSION ),
 		);
 		return $links;
 	}
@@ -70,7 +70,7 @@ class Nodeinfo21 {
 	 */
 	public static function schema( $schema ) {
 		// NodeInfo 2.1 schema - adds repository and homepage to software.
-		$schema['properties'] = array_merge(
+		$schema['properties'] = \array_merge(
 			$schema['properties'],
 			array(
 				'version'           => array(
@@ -206,7 +206,7 @@ class Nodeinfo21 {
 		}
 
 		// Default protocols - can be extended via filter.
-		return apply_filters( 'nodeinfo_protocols', array() );
+		return \apply_filters( 'nodeinfo_protocols', array() );
 	}
 
 	/**
@@ -239,17 +239,17 @@ class Nodeinfo21 {
 			return $usage;
 		}
 
-		$users = get_users(
+		$users = \get_users(
 			array(
 				'fields'         => 'ID',
 				'capability__in' => array( 'publish_posts' ),
 			)
 		);
 
-		$user_count = is_array( $users ) ? count( $users ) : 1;
+		$user_count = \is_array( $users ) ? \count( $users ) : 1;
 
-		$posts    = wp_count_posts();
-		$comments = wp_count_comments();
+		$posts    = \wp_count_posts();
+		$comments = \wp_count_comments();
 
 		$usage['users'] = array(
 			'total'          => $user_count,
@@ -275,9 +275,9 @@ class Nodeinfo21 {
 			return $metadata;
 		}
 
-		$metadata['nodeName']        = get_bloginfo( 'name' );
-		$metadata['nodeDescription'] = get_bloginfo( 'description' );
-		$metadata['nodeIcon']        = get_site_icon_url();
+		$metadata['nodeName']        = \get_bloginfo( 'name' );
+		$metadata['nodeDescription'] = \get_bloginfo( 'description' );
+		$metadata['nodeIcon']        = \get_site_icon_url();
 
 		return $metadata;
 	}

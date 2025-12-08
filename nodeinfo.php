@@ -39,9 +39,6 @@ function nodeinfo_init() {
 	Nodeinfo\Integration\Nodeinfo21::init();
 	Nodeinfo\Integration\Nodeinfo22::init();
 
-	// Initialize Site Health checks.
-	Nodeinfo\Health_Check::init();
-
 	// Register REST routes.
 	add_action( 'rest_api_init', 'nodeinfo_register_routes' );
 
@@ -51,6 +48,15 @@ function nodeinfo_init() {
 	add_filter( 'host_meta', array( Nodeinfo\Controller\Nodeinfo::class, 'jrd' ) );
 }
 add_action( 'init', 'nodeinfo_init', 9 );
+
+/**
+ * Initialize admin-only features.
+ */
+function nodeinfo_admin_init() {
+	// Initialize Site Health checks.
+	Nodeinfo\Health_Check::init();
+}
+add_action( 'admin_init', 'nodeinfo_admin_init' );
 
 /**
  * Register REST API routes.

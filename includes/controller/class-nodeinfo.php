@@ -7,17 +7,13 @@
 
 namespace Nodeinfo\Controller;
 
-use WP_REST_Controller;
-use WP_REST_Server;
-use WP_REST_Response;
-
 /**
  * NodeInfo REST Controller class.
  *
  * Handles NodeInfo discovery and versioned endpoints.
  * Versions are registered dynamically via filters.
  */
-class Nodeinfo extends WP_REST_Controller {
+class Nodeinfo extends \WP_REST_Controller {
 
 	/**
 	 * The namespace.
@@ -30,12 +26,12 @@ class Nodeinfo extends WP_REST_Controller {
 	 * Register the routes.
 	 */
 	public function register_routes() {
-		register_rest_route(
+		\register_rest_route(
 			$this->namespace,
 			'/discovery',
 			array(
 				array(
-					'methods'             => WP_REST_Server::READABLE,
+					'methods'             => \WP_REST_Server::READABLE,
 					'callback'            => array( $this, 'get_discovery' ),
 					'permission_callback' => '__return_true',
 				),
@@ -48,7 +44,7 @@ class Nodeinfo extends WP_REST_Controller {
 			return;
 		}
 
-		register_rest_route(
+		\register_rest_route(
 			$this->namespace,
 			'/(?P<version>\d\.\d)',
 			array(
@@ -61,7 +57,7 @@ class Nodeinfo extends WP_REST_Controller {
 					),
 				),
 				array(
-					'methods'             => WP_REST_Server::READABLE,
+					'methods'             => \WP_REST_Server::READABLE,
 					'callback'            => array( $this, 'get_item' ),
 					'permission_callback' => '__return_true',
 				),
@@ -81,7 +77,7 @@ class Nodeinfo extends WP_REST_Controller {
 		 *
 		 * @param array $versions List of version strings (e.g., '2.0', '2.1').
 		 */
-		return apply_filters( 'nodeinfo_versions', array() );
+		return \apply_filters( 'nodeinfo_versions', array() );
 	}
 
 	/**
@@ -97,7 +93,7 @@ class Nodeinfo extends WP_REST_Controller {
 		 *
 		 * @param array $links The discovery links.
 		 */
-		$links = apply_filters( 'nodeinfo_discovery_links', $links );
+		$links = \apply_filters( 'nodeinfo_discovery_links', $links );
 
 		$discovery = array( 'links' => $links );
 
@@ -106,9 +102,9 @@ class Nodeinfo extends WP_REST_Controller {
 		 *
 		 * @param array $discovery The discovery document.
 		 */
-		$discovery = apply_filters( 'nodeinfo_discovery', $discovery );
+		$discovery = \apply_filters( 'nodeinfo_discovery', $discovery );
 
-		$response = new WP_REST_Response( $discovery );
+		$response = new \WP_REST_Response( $discovery );
 		$response->header( 'Content-Type', 'application/json; profile=http://nodeinfo.diaspora.software' );
 
 		return $response;
@@ -125,9 +121,9 @@ class Nodeinfo extends WP_REST_Controller {
 
 		$nodeinfo = array(
 			'version'           => $version,
-			'software'          => apply_filters( 'nodeinfo_data_software', array(), $version ),
-			'protocols'         => apply_filters( 'nodeinfo_data_protocols', array(), $version ),
-			'services'          => apply_filters(
+			'software'          => \apply_filters( 'nodeinfo_data_software', array(), $version ),
+			'protocols'         => \apply_filters( 'nodeinfo_data_protocols', array(), $version ),
+			'services'          => \apply_filters(
 				'nodeinfo_data_services',
 				array(
 					'inbound'  => array(),
@@ -135,9 +131,9 @@ class Nodeinfo extends WP_REST_Controller {
 				),
 				$version
 			),
-			'openRegistrations' => (bool) get_option( 'users_can_register', false ),
-			'usage'             => apply_filters( 'nodeinfo_data_usage', array(), $version ),
-			'metadata'          => apply_filters( 'nodeinfo_data_metadata', array(), $version ),
+			'openRegistrations' => (bool) \get_option( 'users_can_register', false ),
+			'usage'             => \apply_filters( 'nodeinfo_data_usage', array(), $version ),
+			'metadata'          => \apply_filters( 'nodeinfo_data_metadata', array(), $version ),
 		);
 
 		/**
@@ -146,9 +142,9 @@ class Nodeinfo extends WP_REST_Controller {
 		 * @param array  $nodeinfo The NodeInfo data.
 		 * @param string $version  The NodeInfo version.
 		 */
-		$nodeinfo = apply_filters( 'nodeinfo_data', $nodeinfo, $version );
+		$nodeinfo = \apply_filters( 'nodeinfo_data', $nodeinfo, $version );
 
-		return new WP_REST_Response( $nodeinfo );
+		return new \WP_REST_Response( $nodeinfo );
 	}
 
 	/**
@@ -169,7 +165,7 @@ class Nodeinfo extends WP_REST_Controller {
 		 *
 		 * @param array $schema The schema data.
 		 */
-		return apply_filters( 'nodeinfo_schema', $schema );
+		return \apply_filters( 'nodeinfo_schema', $schema );
 	}
 
 	/**
@@ -191,9 +187,9 @@ class Nodeinfo extends WP_REST_Controller {
 		 *
 		 * @param array $links The discovery links.
 		 */
-		$links = apply_filters( 'nodeinfo_discovery_links', array() );
+		$links = \apply_filters( 'nodeinfo_discovery_links', array() );
 
-		$jrd['links'] = array_merge( $jrd['links'], $links );
+		$jrd['links'] = \array_merge( $jrd['links'], $links );
 
 		return $jrd;
 	}

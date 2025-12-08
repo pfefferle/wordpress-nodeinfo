@@ -8,9 +8,6 @@
 
 namespace Nodeinfo\Controller;
 
-use WP_REST_Controller;
-use WP_REST_Server;
-use WP_REST_Response;
 use function Nodeinfo\get_active_users;
 use function Nodeinfo\get_masked_version;
 
@@ -19,7 +16,7 @@ use function Nodeinfo\get_masked_version;
  *
  * Handles NodeInfo2 endpoints (version 1.0).
  */
-class Nodeinfo2 extends WP_REST_Controller {
+class Nodeinfo2 extends \WP_REST_Controller {
 
 	/**
 	 * The namespace.
@@ -32,7 +29,7 @@ class Nodeinfo2 extends WP_REST_Controller {
 	 * Register the routes.
 	 */
 	public function register_routes() {
-		register_rest_route(
+		\register_rest_route(
 			$this->namespace,
 			'/(?P<version>\d\.\d)',
 			array(
@@ -45,7 +42,7 @@ class Nodeinfo2 extends WP_REST_Controller {
 					),
 				),
 				array(
-					'methods'             => WP_REST_Server::READABLE,
+					'methods'             => \WP_REST_Server::READABLE,
 					'callback'            => array( $this, 'get_item' ),
 					'permission_callback' => '__return_true',
 				),
@@ -63,31 +60,31 @@ class Nodeinfo2 extends WP_REST_Controller {
 	public function get_item( $request ) {
 		$version = $request->get_param( 'version' );
 
-		$users = get_users(
+		$users = \get_users(
 			array(
 				'capability__in' => array( 'publish_posts' ),
 			)
 		);
 
-		$user_count = is_array( $users ) ? count( $users ) : 1;
+		$user_count = \is_array( $users ) ? \count( $users ) : 1;
 
-		$posts    = wp_count_posts();
-		$comments = wp_count_comments();
+		$posts    = \wp_count_posts();
+		$comments = \wp_count_comments();
 
 		$nodeinfo2 = array(
 			'version'           => $version,
-			'server'            => apply_filters(
+			'server'            => \apply_filters(
 				'nodeinfo2_data_server',
 				array(
-					'baseUrl'  => home_url( '/' ),
-					'name'     => get_bloginfo( 'name' ),
+					'baseUrl'  => \home_url( '/' ),
+					'name'     => \get_bloginfo( 'name' ),
 					'software' => 'wordpress',
 					'version'  => get_masked_version(),
 				),
 				$version
 			),
-			'protocols'         => apply_filters( 'nodeinfo2_data_protocols', array(), $version ),
-			'services'          => apply_filters(
+			'protocols'         => \apply_filters( 'nodeinfo2_data_protocols', array(), $version ),
+			'services'          => \apply_filters(
 				'nodeinfo2_data_services',
 				array(
 					'inbound'  => array( 'atom1.0', 'rss2.0', 'pop3' ),
@@ -95,8 +92,8 @@ class Nodeinfo2 extends WP_REST_Controller {
 				),
 				$version
 			),
-			'openRegistrations' => (bool) get_option( 'users_can_register', false ),
-			'usage'             => apply_filters(
+			'openRegistrations' => (bool) \get_option( 'users_can_register', false ),
+			'usage'             => \apply_filters(
 				'nodeinfo2_data_usage',
 				array(
 					'users'         => array(
@@ -109,12 +106,12 @@ class Nodeinfo2 extends WP_REST_Controller {
 				),
 				$version
 			),
-			'metadata'          => apply_filters(
+			'metadata'          => \apply_filters(
 				'nodeinfo2_data_metadata',
 				array(
-					'nodeName'        => get_bloginfo( 'name' ),
-					'nodeDescription' => get_bloginfo( 'description' ),
-					'nodeIcon'        => get_site_icon_url(),
+					'nodeName'        => \get_bloginfo( 'name' ),
+					'nodeDescription' => \get_bloginfo( 'description' ),
+					'nodeIcon'        => \get_site_icon_url(),
 				),
 				$version
 			),
@@ -126,9 +123,9 @@ class Nodeinfo2 extends WP_REST_Controller {
 		 * @param array  $nodeinfo2 The NodeInfo2 data.
 		 * @param string $version   The NodeInfo2 version.
 		 */
-		$nodeinfo2 = apply_filters( 'nodeinfo2_data', $nodeinfo2, $version );
+		$nodeinfo2 = \apply_filters( 'nodeinfo2_data', $nodeinfo2, $version );
 
-		return new WP_REST_Response( $nodeinfo2 );
+		return new \WP_REST_Response( $nodeinfo2 );
 	}
 
 	/**

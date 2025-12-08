@@ -14,7 +14,7 @@ namespace Nodeinfo;
  * @return int The number of active users.
  */
 function get_active_users( $duration = '1 month ago' ) {
-	$posts = get_posts(
+	$posts = \get_posts(
 		array(
 			'post_type'      => 'post',
 			'post_status'    => 'publish',
@@ -33,9 +33,9 @@ function get_active_users( $duration = '1 month ago' ) {
 		return 0;
 	}
 
-	return count(
-		array_unique(
-			wp_list_pluck(
+	return \count(
+		\array_unique(
+			\wp_list_pluck(
 				$posts,
 				'post_author'
 			)
@@ -49,11 +49,11 @@ function get_active_users( $duration = '1 month ago' ) {
  * @return string The masked version.
  */
 function get_masked_version() {
-	$version = get_bloginfo( 'version' );
+	$version = \get_bloginfo( 'version' );
 	// Strip RC/beta suffixes.
-	$version = preg_replace( '/-.*$/', '', $version );
-	$version = explode( '.', $version );
-	$version = array_slice( $version, 0, 2 );
+	$version = \preg_replace( '/-.*$/', '', $version );
+	$version = \explode( '.', $version );
+	$version = \array_slice( $version, 0, 2 );
 
-	return implode( '.', $version );
+	return \implode( '.', $version );
 }
