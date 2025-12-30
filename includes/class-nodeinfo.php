@@ -63,6 +63,7 @@ class Nodeinfo {
 			return;
 		}
 
+		$this->register_integrations();
 		$this->register_hooks();
 		$this->register_admin_hooks();
 
@@ -70,16 +71,22 @@ class Nodeinfo {
 	}
 
 	/**
+	 * Register NodeInfo version integrations.
+	 *
+	 * These only register filters, so they can be called directly.
+	 */
+	public function register_integrations() {
+		Nodeinfo10::init();
+		Nodeinfo11::init();
+		Nodeinfo20::init();
+		Nodeinfo21::init();
+		Nodeinfo22::init();
+	}
+
+	/**
 	 * Register hooks.
 	 */
 	public function register_hooks() {
-		// Initialize NodeInfo version integrations.
-		\add_action( 'init', array( Nodeinfo10::class, 'init' ), 9 );
-		\add_action( 'init', array( Nodeinfo11::class, 'init' ), 9 );
-		\add_action( 'init', array( Nodeinfo20::class, 'init' ), 9 );
-		\add_action( 'init', array( Nodeinfo21::class, 'init' ), 9 );
-		\add_action( 'init', array( Nodeinfo22::class, 'init' ), 9 );
-
 		// Register REST routes.
 		\add_action( 'rest_api_init', array( $this, 'register_routes' ) );
 
