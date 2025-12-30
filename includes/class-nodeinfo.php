@@ -29,13 +29,6 @@ class Nodeinfo {
 	private static $instance;
 
 	/**
-	 * Text domain.
-	 *
-	 * @var string
-	 */
-	const TEXT_DOMAIN = 'nodeinfo';
-
-	/**
 	 * Whether the class has been initialized.
 	 *
 	 * @var boolean
@@ -77,23 +70,9 @@ class Nodeinfo {
 	}
 
 	/**
-	 * Load the plugin text domain.
-	 */
-	public function load_textdomain() {
-		\load_plugin_textdomain(
-			self::TEXT_DOMAIN,
-			false,
-			\dirname( \plugin_basename( NODEINFO_PLUGIN_FILE ) ) . '/languages'
-		);
-	}
-
-	/**
 	 * Register hooks.
 	 */
 	public function register_hooks() {
-		// Load plugin text domain.
-		\add_action( 'init', array( $this, 'load_textdomain' ) );
-
 		// Initialize NodeInfo version integrations.
 		\add_action( 'init', array( Nodeinfo10::class, 'init' ), 9 );
 		\add_action( 'init', array( Nodeinfo11::class, 'init' ), 9 );
