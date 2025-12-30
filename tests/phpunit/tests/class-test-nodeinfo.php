@@ -51,7 +51,7 @@ class Test_Nodeinfo extends \WP_UnitTestCase {
 		$routes = $wp_rest_server->get_routes();
 
 		$this->assertArrayHasKey( '/nodeinfo/discovery', $routes );
-		$this->assertArrayHasKey( '/nodeinfo2/1.0', $routes );
+		$this->assertArrayHasKey( '/nodeinfo2/(?P<version>\\d\\.\\d)', $routes );
 
 		$wp_rest_server = null;
 	}
@@ -79,14 +79,22 @@ class Test_Nodeinfo extends \WP_UnitTestCase {
 	public function test_rewrite_rules_added() {
 		global $wp_rewrite;
 
-		// Flush rules to ensure they're registered.
+		// Enable permalinks for testing.
+		$wp_rewrite->set_permalink_structure( '/%postname%/' );
+
+		// Add rewrite rules.
 		\Nodeinfo\Nodeinfo::get_instance()->add_rewrite_rules();
 		$wp_rewrite->flush_rules();
 
 		$rules = $wp_rewrite->wp_rewrite_rules();
 
+		// Ensure rules is an array.
+		$this->assertIsArray( $rules );
 		$this->assertArrayHasKey( '^.well-known/nodeinfo', $rules );
 		$this->assertArrayHasKey( '^.well-known/x-nodeinfo2', $rules );
+
+		// Reset permalink structure.
+		$wp_rewrite->set_permalink_structure( '' );
 	}
 
 	/**
