@@ -5,7 +5,7 @@
 - Tags: nodeinfo, fediverse, ostatus, diaspora, activitypub
 - Requires at least: 6.6
 - Tested up to: 6.9
-- Stable tag: 3.0.0
+- Stable tag: 3.1.0
 - Requires PHP: 7.2
 - License: MIT
 - License URI: https://opensource.org/licenses/MIT
@@ -80,6 +80,11 @@ If either check fails, you'll see recommendations on how to fix the issue.
 ## Changelog
 
 Project and support maintained on github at [pfefferle/wordpress-nodeinfo](https://github.com/pfefferle/wordpress-nodeinfo).
+
+### 3.1.0
+
+* Added singleton-based plugin loading mechanism for better extensibility
+* Deprecated `wellknown_nodeinfo_data` filter in favor of `nodeinfo_discovery`
 
 ### 3.0.0
 
