@@ -158,6 +158,10 @@ class Nodeinfo {
 	 * Handle plugin activation.
 	 *
 	 * Initializes the plugin and flushes rewrite rules.
+	 *
+	 * Note: We call init() to register all hooks. However, during activation
+	 * the 'init' hook may have already fired, so we also call add_rewrite_rules()
+	 * directly to ensure rules are registered.
 	 */
 	public static function activate() {
 		$instance = self::get_instance();

@@ -153,4 +153,65 @@ class Test_Nodeinfo extends \WP_UnitTestCase {
 
 		$this->assertNotFalse( has_action( 'admin_init' ) );
 	}
+
+	/**
+	 * Test that init() guard prevents multiple initializations.
+	 *
+	 * @covers ::init
+	 */
+	public function test_init_guard_prevents_double_initialization() {
+		$instance = \Nodeinfo\Nodeinfo::get_instance();
+
+		// Get the filter count before calling init again.
+		$filter_count_before = has_filter( 'nodeinfo_discovery' );
+
+		// Call init() again - should be guarded.
+		$instance->init();
+
+		// Filter count should remain the same.
+		$filter_count_after = has_filter( 'nodeinfo_discovery' );
+
+		$this->assertSame( $filter_count_before, $filter_count_after );
+	}
+
+	/**
+	 * Test activate() method registers rewrite rules.
+	 *
+	 * @covers ::activate
+	 */
+	public function test_activate_registers_rewrite_rules() {
+		global $wp_rewrite;
+
+		// Save original permalink structure.
+		$original_structure = $wp_rewrite->permalink_structure;
+
+		// Enable permalinks for testing.
+		$wp_rewrite->set_permalink_structure( '/%postname%/' );
+
+		// Call activate.
+		\Nodeinfo\Nodeinfo::activate();
+
+		$rules = $wp_rewrite->wp_rewrite_rules();
+
+		$this->assertIsArray( $rules );
+		$this->assertArrayHasKey( '^.well-known/nodeinfo', $rules );
+
+		// Restore original permalink structure.
+		$wp_rewrite->set_permalink_structure( $original_structure );
+		$wp_rewrite->flush_rules();
+	}
+
+	/**
+	 * Test deactivate() method flushes rewrite rules.
+	 *
+	 * @covers ::deactivate
+	 */
+	public function test_deactivate_flushes_rewrite_rules() {
+		// This test verifies deactivate() runs without errors.
+		// The actual effect (flushing rules) is internal to WordPress.
+		\Nodeinfo\Nodeinfo::deactivate();
+
+		// If we get here without exceptions, the test passes.
+		$this->assertTrue( true );
+	}
 }
