@@ -104,6 +104,31 @@ class Nodeinfo {
 
 		// Add rewrite rules for well-known endpoints.
 		\add_action( 'init', array( $this, 'add_rewrite_rules' ), 1 );
+
+		// Register deprecated filter handlers.
+		\add_filter( 'nodeinfo_discovery', array( $this, 'deprecated_wellknown_nodeinfo_data' ), 99 );
+	}
+
+	/**
+	 * Handles the deprecated wellknown_nodeinfo_data filter.
+	 *
+	 * @param array $discovery The discovery document.
+	 * @return array The filtered discovery document.
+	 */
+	public function deprecated_wellknown_nodeinfo_data( $discovery ) {
+		/**
+		 * Filters the NodeInfo discovery document.
+		 *
+		 * @deprecated 3.0.0 Use nodeinfo_discovery instead.
+		 *
+		 * @param array $discovery The discovery document.
+		 */
+		return \apply_filters_deprecated(
+			'wellknown_nodeinfo_data',
+			array( $discovery ),
+			'3.0.0',
+			'nodeinfo_discovery'
+		);
 	}
 
 	/**
