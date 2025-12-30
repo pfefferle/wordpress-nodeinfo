@@ -73,26 +73,33 @@ class Nodeinfo {
 		$this->register_hooks();
 		$this->register_admin_hooks();
 
-		// Load language files.
+		$this->initialized = true;
+	}
+
+	/**
+	 * Load the plugin text domain.
+	 */
+	public function load_textdomain() {
 		\load_plugin_textdomain(
 			self::TEXT_DOMAIN,
 			false,
 			\dirname( \plugin_basename( NODEINFO_PLUGIN_FILE ) ) . '/languages'
 		);
-
-		$this->initialized = true;
 	}
 
 	/**
 	 * Register hooks.
 	 */
 	public function register_hooks() {
+		// Load plugin text domain.
+		\add_action( 'init', array( $this, 'load_textdomain' ) );
+
 		// Initialize NodeInfo version integrations.
-		\add_action( 'init', array( Nodeinfo10::class, 'init' ) );
-		\add_action( 'init', array( Nodeinfo11::class, 'init' ) );
-		\add_action( 'init', array( Nodeinfo20::class, 'init' ) );
-		\add_action( 'init', array( Nodeinfo21::class, 'init' ) );
-		\add_action( 'init', array( Nodeinfo22::class, 'init' ) );
+		\add_action( 'init', array( Nodeinfo10::class, 'init' ), 9 );
+		\add_action( 'init', array( Nodeinfo11::class, 'init' ), 9 );
+		\add_action( 'init', array( Nodeinfo20::class, 'init' ), 9 );
+		\add_action( 'init', array( Nodeinfo21::class, 'init' ), 9 );
+		\add_action( 'init', array( Nodeinfo22::class, 'init' ), 9 );
 
 		// Register REST routes.
 		\add_action( 'rest_api_init', array( $this, 'register_routes' ) );
