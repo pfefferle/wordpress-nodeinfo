@@ -98,8 +98,8 @@ class Nodeinfo {
 		\add_filter( 'webfinger_post_data', array( Controller_Nodeinfo::class, 'jrd' ), 10, 3 );
 		\add_filter( 'host_meta', array( Controller_Nodeinfo::class, 'jrd' ) );
 
-		// Add rewrite rules for well-known endpoints.
-		\add_action( 'init', array( $this, 'add_rewrite_rules' ), 1 );
+		// Add rewrite rules for well-known endpoints (only during flush).
+		\add_filter( 'rewrite_rules_array', array( $this, 'add_rewrite_rules' ) );
 
 		// Register deprecated filter handlers.
 		\add_filter( 'nodeinfo_discovery', array( $this, 'deprecated_wellknown_nodeinfo_data' ), 99 );
@@ -148,25 +148,27 @@ class Nodeinfo {
 
 	/**
 	 * Add rewrite rules for well-known endpoints.
+	 *
+	 * @param array $rules The existing rewrite rules.
+	 * @return array The modified rewrite rules.
 	 */
-	public function add_rewrite_rules() {
-		\add_rewrite_rule( '^.well-known/nodeinfo', 'index.php?rest_route=/nodeinfo/discovery', 'top' );
-		\add_rewrite_rule( '^.well-known/x-nodeinfo2', 'index.php?rest_route=/nodeinfo2/1.0', 'top' );
+	public function add_rewrite_rules( $rules ) {
+		$new_rules = array(
+			'^.well-known/nodeinfo'    => 'index.php?rest_route=/nodeinfo/discovery',
+			'^.well-known/x-nodeinfo2' => 'index.php?rest_route=/nodeinfo2/1.0',
+		);
+
+		return \array_merge( $new_rules, $rules );
 	}
 
 	/**
 	 * Handle plugin activation.
 	 *
-	 * Initializes the plugin and flushes rewrite rules.
-	 *
-	 * Note: We call init() to register all hooks. However, during activation
-	 * the 'init' hook may have already fired, so we also call add_rewrite_rules()
-	 * directly to ensure rules are registered.
+	 * Initializes the plugin and flushes rewrite rules. The rewrite_rules_array
+	 * filter will add our rules during the flush.
 	 */
 	public static function activate() {
-		$instance = self::get_instance();
-		$instance->init();
-		$instance->add_rewrite_rules();
+		self::get_instance()->init();
 		\flush_rewrite_rules();
 	}
 

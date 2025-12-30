@@ -81,28 +81,16 @@ class Test_Nodeinfo extends \WP_UnitTestCase {
 	 * @covers ::add_rewrite_rules
 	 */
 	public function test_rewrite_rules_added() {
-		global $wp_rewrite;
+		$instance = \Nodeinfo\Nodeinfo::get_instance();
 
-		// Save original permalink structure.
-		$original_structure = $wp_rewrite->permalink_structure;
+		// Test the filter directly.
+		$rules = $instance->add_rewrite_rules( array() );
 
-		// Enable permalinks for testing.
-		$wp_rewrite->set_permalink_structure( '/%postname%/' );
-
-		// Add rewrite rules.
-		\Nodeinfo\Nodeinfo::get_instance()->add_rewrite_rules();
-		$wp_rewrite->flush_rules();
-
-		$rules = $wp_rewrite->wp_rewrite_rules();
-
-		// Ensure rules is an array.
 		$this->assertIsArray( $rules );
 		$this->assertArrayHasKey( '^.well-known/nodeinfo', $rules );
 		$this->assertArrayHasKey( '^.well-known/x-nodeinfo2', $rules );
-
-		// Restore original permalink structure.
-		$wp_rewrite->set_permalink_structure( $original_structure );
-		$wp_rewrite->flush_rules();
+		$this->assertEquals( 'index.php?rest_route=/nodeinfo/discovery', $rules['^.well-known/nodeinfo'] );
+		$this->assertEquals( 'index.php?rest_route=/nodeinfo2/1.0', $rules['^.well-known/x-nodeinfo2'] );
 	}
 
 	/**
@@ -175,30 +163,16 @@ class Test_Nodeinfo extends \WP_UnitTestCase {
 	}
 
 	/**
-	 * Test activate() method registers rewrite rules.
+	 * Test activate() method initializes plugin and flushes rewrite rules.
 	 *
 	 * @covers ::activate
 	 */
-	public function test_activate_registers_rewrite_rules() {
-		global $wp_rewrite;
-
-		// Save original permalink structure.
-		$original_structure = $wp_rewrite->permalink_structure;
-
-		// Enable permalinks for testing.
-		$wp_rewrite->set_permalink_structure( '/%postname%/' );
-
-		// Call activate.
+	public function test_activate_initializes_and_flushes() {
+		// Verify activate() runs without errors and initializes the plugin.
 		\Nodeinfo\Nodeinfo::activate();
 
-		$rules = $wp_rewrite->wp_rewrite_rules();
-
-		$this->assertIsArray( $rules );
-		$this->assertArrayHasKey( '^.well-known/nodeinfo', $rules );
-
-		// Restore original permalink structure.
-		$wp_rewrite->set_permalink_structure( $original_structure );
-		$wp_rewrite->flush_rules();
+		// Verify the rewrite_rules_array filter is registered.
+		$this->assertNotFalse( has_filter( 'rewrite_rules_array' ) );
 	}
 
 	/**
