@@ -32,65 +32,17 @@ require_once NODEINFO_PLUGIN_DIR . 'includes/functions.php';
 require_once NODEINFO_PLUGIN_DIR . 'includes/class-nodeinfo-endpoint.php';
 
 /**
- * Initialize the plugin.
+ * Plugin initialization function.
+ *
+ * @return Nodeinfo\Nodeinfo The plugin instance.
  */
-function nodeinfo_init() {
-	// Initialize NodeInfo version integrations.
-	Nodeinfo\Integration\Nodeinfo10::init();
-	Nodeinfo\Integration\Nodeinfo11::init();
-	Nodeinfo\Integration\Nodeinfo20::init();
-	Nodeinfo\Integration\Nodeinfo21::init();
-	Nodeinfo\Integration\Nodeinfo22::init();
-
-	// Register REST routes.
-	add_action( 'rest_api_init', 'nodeinfo_register_routes' );
-
-	// Add WebFinger and Host-Meta discovery.
-	add_filter( 'webfinger_user_data', array( Nodeinfo\Controller\Nodeinfo::class, 'jrd' ), 10, 3 );
-	add_filter( 'webfinger_post_data', array( Nodeinfo\Controller\Nodeinfo::class, 'jrd' ), 10, 3 );
-	add_filter( 'host_meta', array( Nodeinfo\Controller\Nodeinfo::class, 'jrd' ) );
-}
-add_action( 'init', 'nodeinfo_init', 9 );
-
-/**
- * Initialize admin-only features.
- */
-function nodeinfo_admin_init() {
-	// Initialize Site Health checks.
-	Nodeinfo\Health_Check::init();
-}
-add_action( 'admin_init', 'nodeinfo_admin_init' );
-
-/**
- * Register REST API routes.
- */
-function nodeinfo_register_routes() {
-	$nodeinfo_controller = new Nodeinfo\Controller\Nodeinfo();
-	$nodeinfo_controller->register_routes();
-
-	$nodeinfo2_controller = new Nodeinfo\Controller\Nodeinfo2();
-	$nodeinfo2_controller->register_routes();
+function nodeinfo_plugin() {
+	return Nodeinfo\Nodeinfo::get_instance();
 }
 
-/**
- * Add rewrite rules for well-known endpoints.
- */
-function nodeinfo_add_rewrite_rules() {
-	add_rewrite_rule( '^.well-known/nodeinfo', 'index.php?rest_route=/nodeinfo/discovery', 'top' );
-	add_rewrite_rule( '^.well-known/x-nodeinfo2', 'index.php?rest_route=/nodeinfo2/1.0', 'top' );
-}
-add_action( 'init', 'nodeinfo_add_rewrite_rules', 1 );
+// Initialize the plugin.
+nodeinfo_plugin()->init();
 
-/**
- * Flush rewrite rules on activation.
- */
-function nodeinfo_activate() {
-	nodeinfo_add_rewrite_rules();
-	flush_rewrite_rules();
-}
-register_activation_hook( __FILE__, 'nodeinfo_activate' );
-
-/**
- * Flush rewrite rules on deactivation.
- */
-register_deactivation_hook( __FILE__, 'flush_rewrite_rules' );
+// Register activation and deactivation hooks.
+register_activation_hook( __FILE__, array( Nodeinfo\Nodeinfo::class, 'activate' ) );
+register_deactivation_hook( __FILE__, array( Nodeinfo\Nodeinfo::class, 'deactivate' ) );

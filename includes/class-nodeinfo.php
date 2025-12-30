@@ -1,0 +1,154 @@
+<?php
+/**
+ * Nodeinfo Class
+ *
+ * @package Nodeinfo
+ */
+
+namespace Nodeinfo;
+
+use Nodeinfo\Controller\Nodeinfo as Controller_Nodeinfo;
+use Nodeinfo\Controller\Nodeinfo2 as Controller_Nodeinfo2;
+use Nodeinfo\Integration\Nodeinfo10;
+use Nodeinfo\Integration\Nodeinfo11;
+use Nodeinfo\Integration\Nodeinfo20;
+use Nodeinfo\Integration\Nodeinfo21;
+use Nodeinfo\Integration\Nodeinfo22;
+
+/**
+ * Nodeinfo Class
+ *
+ * @package Nodeinfo
+ */
+class Nodeinfo {
+	/**
+	 * Instance of the class.
+	 *
+	 * @var Nodeinfo
+	 */
+	private static $instance;
+
+	/**
+	 * Text domain.
+	 *
+	 * @var string
+	 */
+	const TEXT_DOMAIN = 'nodeinfo';
+
+	/**
+	 * Whether the class has been initialized.
+	 *
+	 * @var boolean
+	 */
+	private $initialized = false;
+
+	/**
+	 * Get the instance of the class.
+	 *
+	 * @return Nodeinfo
+	 */
+	public static function get_instance() {
+		if ( null === self::$instance ) {
+			self::$instance = new self();
+		}
+
+		return self::$instance;
+	}
+
+	/**
+	 * Do not allow multiple instances of the class.
+	 */
+	private function __construct() {
+		// Do nothing.
+	}
+
+	/**
+	 * Initialize the plugin.
+	 */
+	public function init() {
+		if ( $this->initialized ) {
+			return;
+		}
+
+		$this->register_hooks();
+		$this->register_admin_hooks();
+
+		// Load language files.
+		\load_plugin_textdomain(
+			self::TEXT_DOMAIN,
+			false,
+			\dirname( \plugin_basename( NODEINFO_PLUGIN_FILE ) ) . '/languages'
+		);
+
+		$this->initialized = true;
+	}
+
+	/**
+	 * Register hooks.
+	 */
+	public function register_hooks() {
+		// Initialize NodeInfo version integrations.
+		\add_action( 'init', array( Nodeinfo10::class, 'init' ) );
+		\add_action( 'init', array( Nodeinfo11::class, 'init' ) );
+		\add_action( 'init', array( Nodeinfo20::class, 'init' ) );
+		\add_action( 'init', array( Nodeinfo21::class, 'init' ) );
+		\add_action( 'init', array( Nodeinfo22::class, 'init' ) );
+
+		// Register REST routes.
+		\add_action( 'rest_api_init', array( $this, 'register_routes' ) );
+
+		// Add WebFinger and Host-Meta discovery.
+		\add_filter( 'webfinger_user_data', array( Controller_Nodeinfo::class, 'jrd' ), 10, 3 );
+		\add_filter( 'webfinger_post_data', array( Controller_Nodeinfo::class, 'jrd' ), 10, 3 );
+		\add_filter( 'host_meta', array( Controller_Nodeinfo::class, 'jrd' ) );
+
+		// Add rewrite rules for well-known endpoints.
+		\add_action( 'init', array( $this, 'add_rewrite_rules' ), 1 );
+	}
+
+	/**
+	 * Register admin hooks.
+	 */
+	public function register_admin_hooks() {
+		// Initialize Site Health checks.
+		\add_action( 'admin_init', array( Health_Check::class, 'init' ) );
+	}
+
+	/**
+	 * Register REST API routes.
+	 */
+	public function register_routes() {
+		$nodeinfo_controller = new Controller_Nodeinfo();
+		$nodeinfo_controller->register_routes();
+
+		$nodeinfo2_controller = new Controller_Nodeinfo2();
+		$nodeinfo2_controller->register_routes();
+	}
+
+	/**
+	 * Add rewrite rules for well-known endpoints.
+	 */
+	public function add_rewrite_rules() {
+		\add_rewrite_rule( '^.well-known/nodeinfo', 'index.php?rest_route=/nodeinfo/discovery', 'top' );
+		\add_rewrite_rule( '^.well-known/x-nodeinfo2', 'index.php?rest_route=/nodeinfo2/1.0', 'top' );
+	}
+
+	/**
+	 * Flush rewrite rules.
+	 *
+	 * Should be called on plugin activation.
+	 */
+	public static function activate() {
+		self::get_instance()->add_rewrite_rules();
+		\flush_rewrite_rules();
+	}
+
+	/**
+	 * Deactivate the plugin.
+	 *
+	 * Should be called on plugin deactivation.
+	 */
+	public static function deactivate() {
+		\flush_rewrite_rules();
+	}
+}
