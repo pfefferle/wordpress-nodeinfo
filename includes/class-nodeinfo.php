@@ -173,7 +173,7 @@ class Nodeinfo {
 	}
 
 	/**
-	 * Deactivate the plugin.
+	 * Handle plugin deactivation.
 	 *
 	 * Should be called on plugin deactivation.
 	 */
