@@ -65,7 +65,10 @@ class Nodeinfo {
 
 		$this->register_integrations();
 		$this->register_hooks();
-		$this->register_admin_hooks();
+
+		if ( \is_admin() ) {
+			$this->register_admin_hooks();
+		}
 
 		$this->initialized = true;
 	}
@@ -152,12 +155,14 @@ class Nodeinfo {
 	}
 
 	/**
-	 * Flush rewrite rules.
+	 * Handle plugin activation.
 	 *
-	 * Should be called on plugin activation.
+	 * Initializes the plugin and flushes rewrite rules.
 	 */
 	public static function activate() {
-		self::get_instance()->add_rewrite_rules();
+		$instance = self::get_instance();
+		$instance->init();
+		$instance->add_rewrite_rules();
 		\flush_rewrite_rules();
 	}
 

@@ -39,8 +39,13 @@ function nodeinfo_plugin() {
 	return Nodeinfo\Nodeinfo::get_instance();
 }
 
-// Initialize the plugin.
-nodeinfo_plugin()->init();
+// Initialize the plugin after all plugins are loaded.
+add_action(
+	'plugins_loaded',
+	function () {
+		nodeinfo_plugin()->init();
+	}
+);
 
 // Register activation and deactivation hooks.
 register_activation_hook( __FILE__, array( Nodeinfo\Nodeinfo::class, 'activate' ) );

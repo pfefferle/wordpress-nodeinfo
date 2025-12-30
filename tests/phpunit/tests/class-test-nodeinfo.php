@@ -45,6 +45,9 @@ class Test_Nodeinfo extends \WP_UnitTestCase {
 	public function test_rest_routes_registered() {
 		global $wp_rest_server;
 
+		// Save original state.
+		$original_server = $wp_rest_server;
+
 		$wp_rest_server = new \WP_REST_Server();
 		do_action( 'rest_api_init' );
 
@@ -53,7 +56,8 @@ class Test_Nodeinfo extends \WP_UnitTestCase {
 		$this->assertArrayHasKey( '/nodeinfo/discovery', $routes );
 		$this->assertArrayHasKey( '/nodeinfo2/(?P<version>\\d\\.\\d)', $routes );
 
-		$wp_rest_server = null;
+		// Restore original state.
+		$wp_rest_server = $original_server;
 	}
 
 	/**
@@ -79,6 +83,9 @@ class Test_Nodeinfo extends \WP_UnitTestCase {
 	public function test_rewrite_rules_added() {
 		global $wp_rewrite;
 
+		// Save original permalink structure.
+		$original_structure = $wp_rewrite->permalink_structure;
+
 		// Enable permalinks for testing.
 		$wp_rewrite->set_permalink_structure( '/%postname%/' );
 
@@ -93,8 +100,9 @@ class Test_Nodeinfo extends \WP_UnitTestCase {
 		$this->assertArrayHasKey( '^.well-known/nodeinfo', $rules );
 		$this->assertArrayHasKey( '^.well-known/x-nodeinfo2', $rules );
 
-		// Reset permalink structure.
-		$wp_rewrite->set_permalink_structure( '' );
+		// Restore original permalink structure.
+		$wp_rewrite->set_permalink_structure( $original_structure );
+		$wp_rewrite->flush_rules();
 	}
 
 	/**
@@ -135,11 +143,14 @@ class Test_Nodeinfo extends \WP_UnitTestCase {
 	}
 
 	/**
-	 * Test admin hooks are registered.
+	 * Test admin hooks can be registered.
 	 *
 	 * @covers ::register_admin_hooks
 	 */
 	public function test_admin_hooks_registered() {
-		$this->assertTrue( has_action( 'admin_init' ) !== false );
+		// Call register_admin_hooks directly to test it works.
+		\Nodeinfo\Nodeinfo::get_instance()->register_admin_hooks();
+
+		$this->assertNotFalse( has_action( 'admin_init' ) );
 	}
 }

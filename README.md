@@ -84,7 +84,7 @@ Project and support maintained on github at [pfefferle/wordpress-nodeinfo](https
 ### 3.1.0
 
 * Added singleton-based plugin loading mechanism for better extensibility
-* Deprecated `wellknown_nodeinfo_data` filter in favor of `nodeinfo_discovery`
+* Added backwards compatibility handler for deprecated `wellknown_nodeinfo_data` filter
 
 ### 3.0.0
 
