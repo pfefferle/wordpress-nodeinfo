@@ -37,10 +37,10 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php-version: ['7.2', '8.3']
+        php-version: ['7.4', '8.3']
         wp-version: ['latest']
         include:
-          - php-version: '7.2'
+          - php-version: '7.4'
             wp-version: '6.5'
 
     name: PHP ${{ matrix.php-version }} / WP ${{ matrix.wp-version }}
