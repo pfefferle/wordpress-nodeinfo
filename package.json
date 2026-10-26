@@ -22,7 +22,7 @@
     "node": ">=18"
   },
   "devDependencies": {
-    "@wordpress/env": "^11.0.0"
+    "@wordpress/env": "^12.0.0"
   },
   "scripts": {
     "wp-env": "wp-env",
